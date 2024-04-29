@@ -3,7 +3,32 @@ guid: e6e5ff2750520e24086ca846ceb49fcb
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: asfalt
+    second: {fileID: 2100000, guid: be4f9674254108b449bcbfce44c5270f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "kald\u0131r\u0131m"
+    second: {fileID: 2100000, guid: b9c533161991bf144aa9f59f51938d4d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "kald\u0131r\u0131m ta\u015F\u0131"
+    second: {fileID: 2100000, guid: bffae03a44a07da46b538cc8ea54bf4a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "orta \u015Ferit yol \xE7izgisi"
+    second: {fileID: 2100000, guid: c51bae2c51df9c44d89214e4ebacd9b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "yol kenar\u0131 \xE7izgisi"
+    second: {fileID: 2100000, guid: 3d8591fc0cb4d0a40ade95dd25d5bfc3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -28,8 +28,6 @@ public class RoadGenerator : MonoBehaviour
 
     void SpawnPoints(int pointAmount)
     {
-        splineComputerRoad = gameObject.AddComponent<SplineComputer>();
-
         SplinePoint[] points = new SplinePoint[pointAmount];
 
         for (int i = 0; i < points.Length; i++)
@@ -42,7 +40,7 @@ public class RoadGenerator : MonoBehaviour
         }
 
         splineComputerRoad.SetPoints(points);
-        splineMesh.spline = splineComputerRoad;
+        //splineMesh.spline = splineComputerRoad;
         splineFollower.spline = splineComputerRoad;
     }
 

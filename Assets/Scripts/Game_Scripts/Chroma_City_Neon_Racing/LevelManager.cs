@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] private Player player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,11 +21,12 @@ public class LevelManager : MonoBehaviour
     public void RightPressed()
     {
         Debug.LogWarning("Right");
+        player.SwitchLane(true);
     }
 
     public void LeftPressed()
     {
         Debug.LogWarning("Left");
-
+        player.SwitchLane(false);
     }
 }

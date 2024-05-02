@@ -60,7 +60,7 @@ namespace UnityEngine.Rendering.Universal
         {
             RenderPipelineManager.beginCameraRendering -= ExecutePlanarReflections;
 
-            if(_reflectionCamera)
+            if (_reflectionCamera)
             {
                 _reflectionCamera.targetTexture = null;
                 SafeDestroy(_reflectionCamera.gameObject);
@@ -109,29 +109,32 @@ namespace UnityEngine.Rendering.Universal
                 normal = target.transform.up;
             }
 
-            UpdateCamera(realCamera, _reflectionCamera);
+            if (_reflectionCamera.rect.x != 0 && _reflectionCamera.rect.y != 0)
+            {
+                UpdateCamera(realCamera, _reflectionCamera);
 
-            // Render reflection
-            // Reflect camera around reflection plane
-            var d = -Vector3.Dot(normal, pos) - m_settings.m_ClipPlaneOffset;
-            var reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
+                // Render reflection
+                // Reflect camera around reflection plane
+                var d = -Vector3.Dot(normal, pos) - m_settings.m_ClipPlaneOffset;
+                var reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
 
-            var reflection = Matrix4x4.identity;
-            reflection *= Matrix4x4.Scale(new Vector3(1, -1, 1));
+                var reflection = Matrix4x4.identity;
+                reflection *= Matrix4x4.Scale(new Vector3(1, -1, 1));
 
-            CalculateReflectionMatrix(ref reflection, reflectionPlane);
-            var oldPosition = realCamera.transform.position - new Vector3(0, pos.y * 2, 0);
-            var newPosition = ReflectPosition(oldPosition);
-            _reflectionCamera.transform.forward = Vector3.Scale(realCamera.transform.forward, new Vector3(1, -1, 1));
-            _reflectionCamera.worldToCameraMatrix = realCamera.worldToCameraMatrix * reflection;
+                CalculateReflectionMatrix(ref reflection, reflectionPlane);
+                var oldPosition = realCamera.transform.position - new Vector3(0, pos.y * 2, 0);
+                var newPosition = ReflectPosition(oldPosition);
+                _reflectionCamera.transform.forward = Vector3.Scale(realCamera.transform.forward, new Vector3(1, -1, 1));
+                _reflectionCamera.worldToCameraMatrix = realCamera.worldToCameraMatrix * reflection;
 
-            // Setup oblique projection matrix so that near plane is our reflection
-            // plane. This way we clip everything below/above it for free.
-            var clipPlane = CameraSpacePlane(_reflectionCamera, pos - Vector3.up * 0.1f, normal, 1.0f);
-            var projection = realCamera.CalculateObliqueMatrix(clipPlane);
-            _reflectionCamera.projectionMatrix = projection;
-            _reflectionCamera.cullingMask = m_settings.m_ReflectLayers; // never render water layer
-            _reflectionCamera.transform.position = newPosition;
+                // Setup oblique projection matrix so that near plane is our reflection
+                // plane. This way we clip everything below/above it for free.
+                var clipPlane = CameraSpacePlane(_reflectionCamera, pos - Vector3.up * 0.1f, normal, 1.0f);
+                var projection = realCamera.CalculateObliqueMatrix(clipPlane);
+                _reflectionCamera.projectionMatrix = projection;
+                _reflectionCamera.cullingMask = m_settings.m_ReflectLayers; // never render water layer
+                _reflectionCamera.transform.position = newPosition;
+            }
         }
 
         // Calculates reflection matrix around the given plane
@@ -166,7 +169,7 @@ namespace UnityEngine.Rendering.Universal
 
         private float GetScaleValue()
         {
-            switch(m_settings.m_ResolutionMultiplier)
+            switch (m_settings.m_ResolutionMultiplier)
             {
                 case ResolutionMulltiplier.Full:
                     return 1f;
@@ -199,12 +202,12 @@ namespace UnityEngine.Rendering.Universal
 
         private Camera CreateMirrorObjects()
         {
-            var go = new GameObject("Planar Reflections",typeof(Camera));
+            var go = new GameObject("Planar Reflections", typeof(Camera));
             var cameraData = go.AddComponent(typeof(UniversalAdditionalCameraData)) as UniversalAdditionalCameraData;
 
             cameraData.requiresColorOption = CameraOverrideOption.Off;
             cameraData.requiresDepthOption = CameraOverrideOption.Off;
-            cameraData.SetRenderer(1);
+            cameraData.SetRenderer(0);
 
             var t = transform;
             var reflectionCamera = go.GetComponent<Camera>();
@@ -226,7 +229,7 @@ namespace UnityEngine.Rendering.Universal
                 _reflectionTexture = RenderTexture.GetTemporary(res.x, res.y, 16,
                     GraphicsFormatUtility.GetGraphicsFormat(hdrFormat, true));
             }
-            _reflectionCamera.targetTexture =  _reflectionTexture;
+            _reflectionCamera.targetTexture = _reflectionTexture;
         }
 
         private int2 ReflectionResolution(Camera cam, float scale)
@@ -247,7 +250,7 @@ namespace UnityEngine.Rendering.Universal
 
             var data = new PlanarReflectionSettingData(); // save quality settings and lower them for the planar reflections
             data.Set(); // set quality settings
-            
+
             Shader.EnableKeyword("_PLANAR_REFLECTION_CAMERA");
 
             BeginPlanarReflections?.Invoke(context, _reflectionCamera); // callback Action for PlanarReflection

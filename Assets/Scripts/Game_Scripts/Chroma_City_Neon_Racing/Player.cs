@@ -5,6 +5,10 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    [Header("Player Variables")]
+    [SerializeField] private Material playerMat;
+    [SerializeField] private float colorTime;
+
     [Header("Lane Switch Variables")]
     [SerializeField] private Transform modelTransform;
     [SerializeField] private float leftLaneX;
@@ -15,6 +19,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float rotationTime;
     Sequence laneSwitchSeq;
     private Lane currentLane = Lane.Middle;
+
+    public void SetColor(Color newColor)
+    {
+        // playerMat.color = newColor;
+        playerMat.DOColor(newColor, colorTime);
+    }
+
+    #region Lane
 
     public void SwitchLane(bool isRightPressed)
     {
@@ -77,6 +89,8 @@ public class Player : MonoBehaviour
             _ => middleLaneX,
         };
     }
+
+    #endregion
 }
 
 public enum Lane

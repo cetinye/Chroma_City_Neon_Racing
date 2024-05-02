@@ -5,17 +5,11 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private Player player;
+    [SerializeField] private GameObject checkpointGenerator;
 
-    // Start is called before the first frame update
     void Start()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        ColorCheckpoints();
     }
 
     public void RightPressed()
@@ -28,5 +22,20 @@ public class LevelManager : MonoBehaviour
     {
         Debug.LogWarning("Left");
         player.SwitchLane(false);
+    }
+
+    private void ColorCheckpoints()
+    {
+        List<Checkpoint> checkpoints = new List<Checkpoint>();
+
+        for (int i = 0; i < checkpointGenerator.transform.childCount; i++)
+        {
+            checkpoints.Add(checkpointGenerator.transform.GetChild(i).GetComponent<Checkpoint>());
+        }
+
+        foreach (Checkpoint checkpoint in checkpoints)
+        {
+            checkpoint.SetRandomColor();
+        }
     }
 }

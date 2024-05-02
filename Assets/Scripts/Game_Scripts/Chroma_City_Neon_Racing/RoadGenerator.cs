@@ -7,6 +7,7 @@ public class RoadGenerator : MonoBehaviour
     [Header("Components")]
     public SplineComputer splineComputerRoad;
     public SplineComputer splineComputerBuildings;
+    public SplineComputer splineComputerCheckpoints;
     public SplineFollower splineFollower;
 
     [Header("Variables")]
@@ -24,6 +25,7 @@ public class RoadGenerator : MonoBehaviour
         SpawnPoints(pointAmount);
         RandomizePointsOnX(minX, maxX, pointAmountToRandomize);
         CreateBuildingsSpline();
+        CreateCheckpointsSpline();
     }
 
     void SpawnPoints(int pointAmount)
@@ -67,5 +69,18 @@ public class RoadGenerator : MonoBehaviour
         }
 
         splineComputerBuildings.SetPoints(points);
+    }
+
+    void CreateCheckpointsSpline()
+    {
+        SplinePoint[] points = new SplinePoint[splineComputerRoad.pointCount];
+        points = splineComputerRoad.GetPoints();
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            points[i].position = new Vector3(points[i].position.x, points[i].position.y, points[i].position.z);
+        }
+
+        splineComputerCheckpoints.SetPoints(points);
     }
 }

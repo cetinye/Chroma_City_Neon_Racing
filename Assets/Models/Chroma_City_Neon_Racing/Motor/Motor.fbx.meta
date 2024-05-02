@@ -3,7 +3,22 @@ guid: 6dcec87ebe934c34a9787ca810b01811
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Motorcu
+    second: {fileID: 2100000, guid: 1900aec75edd00a46b598c13b8d1ce53, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tshirt ve Kask
+    second: {fileID: 2100000, guid: bfb9832e923ab4045872b3f067ae7dfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: motor
+    second: {fileID: 2100000, guid: 0c3197594a4e8844eb7749ea01956ea2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

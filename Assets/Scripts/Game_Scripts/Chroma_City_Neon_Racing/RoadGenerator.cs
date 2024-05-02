@@ -8,21 +8,21 @@ public class RoadGenerator : MonoBehaviour
     public SplineComputer splineComputerRoad;
     public SplineComputer splineComputerBuildings;
     public SplineFollower splineFollower;
-    public SplineMesh splineMesh;
 
     [Header("Variables")]
     public int pointAmount;
+    public int pointAmountToRandomize;
+    public float minX;
+    public float maxX;
     public float distBetweenRoads;
 
     [Header("Building Variables")]
     [SerializeField] private float buildingOffsetToRoad;
-    [SerializeField] private Transform buildingsParent;
-    [SerializeField] private List<GameObject> buildings = new List<GameObject>();
 
     void Awake()
     {
         SpawnPoints(pointAmount);
-        RandomizePointsOnX(-1f, 1f, 20);
+        RandomizePointsOnX(minX, maxX, pointAmountToRandomize);
         CreateBuildingsSpline();
     }
 
@@ -40,7 +40,6 @@ public class RoadGenerator : MonoBehaviour
         }
 
         splineComputerRoad.SetPoints(points);
-        //splineMesh.spline = splineComputerRoad;
         splineFollower.spline = splineComputerRoad;
     }
 
@@ -69,20 +68,4 @@ public class RoadGenerator : MonoBehaviour
 
         splineComputerBuildings.SetPoints(points);
     }
-
-    // void PlaceBuildings()
-    // {
-    //     SplinePoint[] points = new SplinePoint[splineComputerBuildings.pointCount];
-    //     points = splineComputerBuildings.GetPoints();
-
-    //     foreach (SplinePoint point in points)
-    //     {
-    //         Instantiate(GetRandomBuilding(), point.position, Quaternion.identity, buildingsParent);
-    //     }
-    // }
-
-    // GameObject GetRandomBuilding()
-    // {
-    //     return buildings[UnityEngine.Random.Range(0, buildings.Count)];
-    // }
 }

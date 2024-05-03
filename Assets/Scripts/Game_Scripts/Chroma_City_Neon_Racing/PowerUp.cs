@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
     [SerializeField] private Material powerUpMat;
+    [SerializeField] private ParticleSystem wrongParticle;
 
     void OnTriggerEnter(Collider other)
     {
@@ -19,7 +18,10 @@ public class PowerUp : MonoBehaviour
             else
             {
                 player.ChangeSpeed(false);
+                Instantiate(wrongParticle, transform.position, Quaternion.identity, transform);
             }
+
+            this.gameObject.SetActive(false);
         }
     }
 }

@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float lerpFactor;
     [SerializeField] private Material playerMat;
     [SerializeField] private float colorTime;
+    [Header("Player Shake Variables")]
+    [SerializeField] private float shakeDuration;
+    [SerializeField] private float shakeStrength;
+    [SerializeField] private int shakeVibrato;
 
     [Header("Lane Switch Variables")]
     [SerializeField] private Transform modelTransform;
@@ -43,8 +47,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            targetSpeed -= speedChangeAmount;
+            StartCoroutine(SlowDownRoutine());
         }
+
+        Mathf.Max(targetSpeed, 0.25f);
     }
 
     public void SetColor(Color newColor)
@@ -123,6 +129,16 @@ public class Player : MonoBehaviour
     }
 
     #endregion
+
+    IEnumerator SlowDownRoutine()
+    {
+        float tempSpeed = targetSpeed;
+        targetSpeed = 0f;
+        modelTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato);
+        yield return new WaitForSeconds(0.33f);
+        targetSpeed = tempSpeed - speedChangeAmount;
+        Mathf.Max(targetSpeed, 0.25f);
+    }
 }
 
 public enum Lane

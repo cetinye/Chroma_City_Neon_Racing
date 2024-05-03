@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Material powerUpMat;
     [SerializeField] private ParticleSystem wrongParticle;
 
@@ -21,7 +22,7 @@ public class PowerUp : MonoBehaviour
                 Instantiate(wrongParticle, transform.position, Quaternion.identity, transform);
             }
 
-            this.gameObject.SetActive(false);
+            meshRenderer.enabled = false;
         }
     }
 }

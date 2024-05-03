@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float targetSpeed;
     [SerializeField] private float lerpFactor;
     [SerializeField] private Material playerMat;
+    [SerializeField] private Color playerColor;
     [SerializeField] private float colorTime;
     [Header("Player Shake Variables")]
     [SerializeField] private float shakeDuration;
@@ -56,12 +57,13 @@ public class Player : MonoBehaviour
     public void SetColor(Color newColor)
     {
         // playerMat.color = newColor;
+        playerColor = newColor;
         playerMat.DOColor(newColor, colorTime);
     }
 
     public Color GetColor()
     {
-        return playerMat.color;
+        return playerColor;
     }
 
     #region Lane

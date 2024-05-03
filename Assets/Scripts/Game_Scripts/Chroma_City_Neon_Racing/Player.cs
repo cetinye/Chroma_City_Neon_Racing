@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Dreamteck.Splines;
 
 public class Player : MonoBehaviour
 {
     [Header("Player Variables")]
+    [SerializeField] private SplineFollower splineFollower;
+    [SerializeField] private float speedChangeAmount;
+    [SerializeField] private float targetSpeed;
+    [SerializeField] private float lerpFactor;
     [SerializeField] private Material playerMat;
     [SerializeField] private float colorTime;
 
@@ -20,10 +25,37 @@ public class Player : MonoBehaviour
     Sequence laneSwitchSeq;
     private Lane currentLane = Lane.Middle;
 
+    void Start()
+    {
+        targetSpeed = splineFollower.followSpeed;
+    }
+
+    void Update()
+    {
+        splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, lerpFactor * Time.deltaTime);
+    }
+
+    public void ChangeSpeed(bool isUp)
+    {
+        if (isUp)
+        {
+            targetSpeed += speedChangeAmount;
+        }
+        else
+        {
+            targetSpeed -= speedChangeAmount;
+        }
+    }
+
     public void SetColor(Color newColor)
     {
         // playerMat.color = newColor;
         playerMat.DOColor(newColor, colorTime);
+    }
+
+    public Color GetColor()
+    {
+        return playerMat.color;
     }
 
     #region Lane

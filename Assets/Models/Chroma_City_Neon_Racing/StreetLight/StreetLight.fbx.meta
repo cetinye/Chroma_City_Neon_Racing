@@ -3,7 +3,17 @@ guid: 74f0c26967c3b8947bec4063b60f5343
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "sokak lambas\u0131"
+    second: {fileID: 2100000, guid: 4ddf3b8b87b470f4dad991b91d3be691, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "sokak lambas\u0131 lambas\u0131"
+    second: {fileID: 2100000, guid: 76ba11de62a20f14a81fac269359ff78, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -23,7 +23,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
-            Debug.LogWarning("Player Passed");
+            Debug.LogWarning("Player Passed Checkpoint");
             player.SetColor(colorMat.color);
         }
     }

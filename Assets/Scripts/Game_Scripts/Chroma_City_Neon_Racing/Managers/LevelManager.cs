@@ -7,9 +7,37 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private GameObject checkpointGenerator;
 
+    [Header("Traffic Light Variables")]
+    [SerializeField] private TrafficLight trafficLightPref;
+
     void Start()
     {
+        GameStateManager.OnGameStateChanged += OnGameStateChanged;
+
         ColorCheckpoints();
+        StartTrafficLight();
+    }
+
+    private void OnGameStateChanged()
+    {
+        switch (GameStateManager.GetGameState())
+        {
+            case GameState.Idle:
+                break;
+
+            case GameState.Racing:
+                player.SetTargetSpeed(1f);
+                break;
+
+            case GameState.Failed:
+                break;
+
+            case GameState.Success:
+                break;
+
+            default:
+                break;
+        }
     }
 
     public void RightPressed()
@@ -37,5 +65,11 @@ public class LevelManager : MonoBehaviour
         {
             checkpoint.SetRandomColor();
         }
+    }
+
+    private void StartTrafficLight()
+    {
+        TrafficLight trafficLight = Instantiate(trafficLightPref);
+        trafficLight.StartCountdown();
     }
 }

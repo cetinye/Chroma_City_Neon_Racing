@@ -12,7 +12,7 @@ public class PowerUp : MonoBehaviour
         {
             Debug.LogWarning("Player PickedUp PowerUp");
 
-            if (powerUpMat.color == player.GetColor())
+            if (powerUpMat.color == player.GetColor() || player.GetColor() == Color.white)
             {
                 player.ChangeSpeed(true);
             }

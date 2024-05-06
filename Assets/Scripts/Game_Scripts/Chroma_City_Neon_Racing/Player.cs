@@ -30,6 +30,11 @@ public class Player : MonoBehaviour
     Sequence laneSwitchSeq;
     private Lane currentLane = Lane.Middle;
 
+    void Awake()
+    {
+        SetColor(Color.white, true);
+    }
+
     void Start()
     {
         targetSpeed = splineFollower.followSpeed;
@@ -37,7 +42,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, lerpFactor * Time.deltaTime);
+        if (GameStateManager.GetGameState() == GameState.Racing)
+            splineFollower.followSpeed = Mathf.Lerp(splineFollower.followSpeed, targetSpeed, lerpFactor * Time.deltaTime);
     }
 
     public void ChangeSpeed(bool isUp)
@@ -54,11 +60,20 @@ public class Player : MonoBehaviour
         Mathf.Max(targetSpeed, 0.25f);
     }
 
-    public void SetColor(Color newColor)
+    public void SetTargetSpeed(float val)
+    {
+        targetSpeed = val;
+    }
+
+    public void SetColor(Color newColor, bool isInstant = false)
     {
         // playerMat.color = newColor;
         playerColor = newColor;
-        playerMat.DOColor(newColor, colorTime);
+
+        if (isInstant)
+            playerMat.color = newColor;
+        else
+            playerMat.DOColor(newColor, colorTime);
     }
 
     public Color GetColor()

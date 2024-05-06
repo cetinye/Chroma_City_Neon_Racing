@@ -52,7 +52,7 @@ public class RoadGenerator : MonoBehaviour
         SplinePoint[] points = new SplinePoint[splineComputerRoad.pointCount];
         points = splineComputerRoad.GetPoints();
 
-        for (int i = 0; i < pointAmountToRandomize; i++)
+        for (int i = 2; i < pointAmountToRandomize + 2; i++)
         {
             points[i].position = new Vector3(UnityEngine.Random.Range(minX, maxX), points[i].position.y, points[i].position.z);
         }

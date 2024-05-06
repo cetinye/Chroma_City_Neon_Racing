@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private Player player;
     [SerializeField] private GameObject checkpointGenerator;
 
-    [Header("Traffic Light Variables")]
+    [Header("Instantiate Prefabs")]
     [SerializeField] private TrafficLight trafficLightPref;
+    [SerializeField] private FinishLine finishPref;
 
     void Start()
     {
         GameStateManager.OnGameStateChanged += OnGameStateChanged;
+        GameStateManager.SetGameState(GameState.Idle);
 
         ColorCheckpoints();
         StartTrafficLight();
@@ -33,11 +36,14 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case GameState.Success:
+                player.SetTargetSpeed(0f);
                 break;
 
             default:
                 break;
         }
+
+        uiManager.UpdateGameStateText(GameStateManager.GetGameState().ToString());
     }
 
     public void RightPressed()
@@ -71,5 +77,28 @@ public class LevelManager : MonoBehaviour
     {
         TrafficLight trafficLight = Instantiate(trafficLightPref);
         trafficLight.StartCountdown();
+    }
+
+    public void SpawnFinish()
+    {
+        Transform[] childs = checkpointGenerator.transform.GetComponentsInChildren<Transform>(false);
+
+        Transform lastActiveCheckpoint = null;
+
+        foreach (Transform child in childs)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                lastActiveCheckpoint = child;
+            }
+        }
+
+        if (lastActiveCheckpoint != null)
+        {
+            FinishLine finish = Instantiate(finishPref);
+            finish.transform.position = lastActiveCheckpoint.position;
+            lastActiveCheckpoint.gameObject.SetActive(false);
+            finish.StartLightChange();
+        }
     }
 }

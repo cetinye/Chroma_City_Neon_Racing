@@ -8,7 +8,7 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Player>(out Player player))
+        if (GameStateManager.GetGameState() == GameState.Racing && other.TryGetComponent<Player>(out Player player))
         {
             Debug.LogWarning("Player PickedUp PowerUp");
 

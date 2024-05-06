@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RoadGenerator : MonoBehaviour
 {
+    [SerializeField] private LevelManager levelManager;
+
     [Header("Components")]
     public SplineComputer splineComputerRoad;
     public SplineComputer splineComputerBuildings;
@@ -106,6 +108,8 @@ public class RoadGenerator : MonoBehaviour
         RemoveExcessObjectsInSpline(splineComputerBuildings);
         RemoveExcessObjectsInSpline(splineComputerPowerUps);
         RemoveExcessObjectsInSpline(splineComputerCheckpoints);
+
+        levelManager.SpawnFinish();
     }
 
     private void RemoveExcessObjectsInSpline(SplineComputer splineComputer)
@@ -127,6 +131,7 @@ public class RoadGenerator : MonoBehaviour
 
             if (child.position == nextChild.position)
             {
+                child.gameObject.SetActive(false);
                 nextChild.gameObject.SetActive(false);
             }
         }

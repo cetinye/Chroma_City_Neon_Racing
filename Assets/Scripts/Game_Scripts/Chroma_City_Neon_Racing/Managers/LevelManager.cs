@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class LevelManager : MonoBehaviour
     [Header("Instantiate Prefabs")]
     [SerializeField] private TrafficLight trafficLightPref;
     [SerializeField] private FinishLine finishPref;
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     void Start()
     {

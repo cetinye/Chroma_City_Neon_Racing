@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private UIManager uiManager;
     [SerializeField] private Player player;
+    [SerializeField] private CameraFollow mainCamera;
     [SerializeField] private GameObject checkpointGenerator;
 
     [Header("Instantiate Prefabs")]
@@ -42,7 +43,8 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case GameState.Success:
-                player.SetTargetSpeed(0f);
+                player.SetTargetSpeed(1f);
+                mainCamera.DetachFromPlayer();
                 break;
 
             default:

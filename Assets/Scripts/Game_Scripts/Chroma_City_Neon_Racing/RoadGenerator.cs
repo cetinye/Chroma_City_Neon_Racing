@@ -110,6 +110,7 @@ public class RoadGenerator : MonoBehaviour
         RemoveExcessObjectsInSpline(splineComputerCheckpoints);
 
         levelManager.SpawnFinish();
+        ExtendRoad();
     }
 
     private void RemoveExcessObjectsInSpline(SplineComputer splineComputer)
@@ -135,5 +136,12 @@ public class RoadGenerator : MonoBehaviour
                 nextChild.gameObject.SetActive(false);
             }
         }
+    }
+
+    private void ExtendRoad()
+    {
+        float extensionDistance = -20f;
+        Vector3 newPos = new Vector3(splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).x, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).y, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).z + extensionDistance);
+        splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
     }
 }

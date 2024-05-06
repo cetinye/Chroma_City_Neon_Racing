@@ -28,6 +28,7 @@ public class RoadGenerator : MonoBehaviour
         CreateBuildingsSpline();
         CreateCheckpointsSpline();
         CreatePowerUpsSpline();
+        Invoke(nameof(RemoveExcessObjects), 1f);
     }
 
     void SpawnPoints(int pointAmount)
@@ -97,5 +98,37 @@ public class RoadGenerator : MonoBehaviour
         }
 
         splineComputerPowerUps.SetPoints(points);
+    }
+
+    void RemoveExcessObjects()
+    {
+        RemoveExcessObjectsInSpline(splineComputerRoad);
+        RemoveExcessObjectsInSpline(splineComputerBuildings);
+        RemoveExcessObjectsInSpline(splineComputerPowerUps);
+        RemoveExcessObjectsInSpline(splineComputerCheckpoints);
+    }
+
+    private void RemoveExcessObjectsInSpline(SplineComputer splineComputer)
+    {
+        if (splineComputer == null || splineComputer.transform == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < splineComputer.transform.childCount - 1; i++)
+        {
+            var child = splineComputer.transform.GetChild(i);
+            var nextChild = splineComputer.transform.GetChild(i + 1);
+
+            if (nextChild == null)
+            {
+                break;
+            }
+
+            if (child.position == nextChild.position)
+            {
+                nextChild.gameObject.SetActive(false);
+            }
+        }
     }
 }

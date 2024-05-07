@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerUps : MonoBehaviour
 {
-    [SerializeField] private List<Transform> powerUps = new List<Transform>();
+    [SerializeField] private List<PowerUp> powerUps = new List<PowerUp>();
     [SerializeField] private Transform leftPos;
     [SerializeField] private Transform middlePos;
     [SerializeField] private Transform rightPos;
@@ -14,15 +14,23 @@ public class PowerUps : MonoBehaviour
     {
         for (int i = 0; i < swapAmount; i++)
         {
-            Swap(powerUps[i % powerUps.Count]);
+            Swap(powerUps[i % powerUps.Count].transform);
         }
     }
 
     void Swap(Transform obj)
     {
         Vector3 oldPos = obj.localPosition;
-        Transform objToSwap = powerUps[UnityEngine.Random.Range(0, powerUps.Count)];
+        Transform objToSwap = powerUps[UnityEngine.Random.Range(0, powerUps.Count)].transform;
         obj.localPosition = objToSwap.localPosition;
         objToSwap.localPosition = oldPos;
+    }
+
+    public void Deactivate()
+    {
+        foreach (PowerUp powerUp in powerUps)
+        {
+            powerUp.SetIsCollideable(false);
+        }
     }
 }

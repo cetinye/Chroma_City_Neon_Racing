@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private CameraFollow mainCamera;
     [SerializeField] private GameObject checkpointGenerator;
+    private FinishLine finish;
 
     [Header("Instantiate Prefabs")]
     [SerializeField] private TrafficLight trafficLightPref;
@@ -103,10 +104,15 @@ public class LevelManager : MonoBehaviour
 
         if (lastActiveCheckpoint != null)
         {
-            FinishLine finish = Instantiate(finishPref);
+            finish = Instantiate(finishPref);
             finish.transform.position = lastActiveCheckpoint.position;
             lastActiveCheckpoint.gameObject.SetActive(false);
             finish.StartLightChange();
         }
+    }
+
+    public Vector3 GetFinishPosition()
+    {
+        return finish.transform.position;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class RoadGenerator : MonoBehaviour
     public SplineComputer splineComputerBuildings;
     public SplineComputer splineComputerCheckpoints;
     public SplineComputer splineComputerPowerUps;
+    public SplineComputer splineComputerPowerUps2;
     public SplineFollower splineFollower;
 
     [Header("Variables")]
@@ -111,6 +113,7 @@ public class RoadGenerator : MonoBehaviour
 
         levelManager.SpawnFinish();
         ExtendRoad();
+        RemoveObjectsAfter();
     }
 
     private void RemoveExcessObjectsInSpline(SplineComputer splineComputer)
@@ -143,5 +146,37 @@ public class RoadGenerator : MonoBehaviour
         float extensionDistance = -20f;
         Vector3 newPos = new Vector3(splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).x, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).y, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).z + extensionDistance);
         splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
+
+        CreateBuildingsSpline();
+        StartCoroutine(RemoveExcessRoutine(splineComputerBuildings));
+    }
+
+    private void RemoveObjectsAfter()
+    {
+        Vector3 finishLinePosition = levelManager.GetFinishPosition();
+
+        for (int i = 0; i < splineComputerPowerUps.transform.childCount; i++)
+        {
+            Transform child = splineComputerPowerUps.transform.GetChild(i);
+            if (child.position.z < finishLinePosition.z)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
+        for (int i = 0; i < splineComputerCheckpoints.transform.childCount; i++)
+        {
+            Transform child = splineComputerCheckpoints.transform.GetChild(i);
+            if (child.position.z < finishLinePosition.z)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    IEnumerator RemoveExcessRoutine(SplineComputer splineComputer)
+    {
+        yield return new WaitForSeconds(1f);
+        RemoveExcessObjectsInSpline(splineComputer);
     }
 }

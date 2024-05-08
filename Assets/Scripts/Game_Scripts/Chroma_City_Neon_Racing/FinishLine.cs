@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Chroma_City_Neon_Racing;
 using DG.Tweening;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class FinishLine : MonoBehaviour
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
+            AudioManager.instance.PlayOneShot(SoundType.Finish);
             GameStateManager.SetGameState(GameState.Success);
         }
     }

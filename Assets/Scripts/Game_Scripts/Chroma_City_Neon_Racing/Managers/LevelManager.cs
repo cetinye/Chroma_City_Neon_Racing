@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Chroma_City_Neon_Racing;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,10 +23,13 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        AudioManager.instance.Play(SoundType.Background);
+
         GameStateManager.OnGameStateChanged += OnGameStateChanged;
         GameStateManager.SetGameState(GameState.Idle);
 
         ColorCheckpoints();
+        AudioManager.instance.PlayOneShot(SoundType.MotorStart);
         StartTrafficLight();
     }
 

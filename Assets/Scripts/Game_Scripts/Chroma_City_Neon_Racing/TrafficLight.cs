@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Chroma_City_Neon_Racing;
 using DG.Tweening;
 using UnityEngine;
 
@@ -25,6 +26,9 @@ public class TrafficLight : MonoBehaviour
 
     IEnumerator CountdownRoutine()
     {
+        AudioManager.instance.PlayAfterXSeconds(SoundType.Countdown, 0.2f);
+        yield return new WaitForSeconds(1f);
+
         int colorIndex = 0;
 
         while (countdownTimer > 0)

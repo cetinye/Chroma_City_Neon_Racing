@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Dreamteck.Splines;
+using Chroma_City_Neon_Racing;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Material playerMat;
     [SerializeField] private Color playerColor;
     [SerializeField] private float colorTime;
+    private float minSpeed, maxSpeed;
+
     [Header("Player Shake Variables")]
     [SerializeField] private float shakeDuration;
     [SerializeField] private float shakeStrength;
@@ -58,11 +61,13 @@ public class Player : MonoBehaviour
         }
 
         Mathf.Max(targetSpeed, 0.25f);
+        ChangeMotorSound();
     }
 
     public void SetTargetSpeed(float val)
     {
         targetSpeed = val;
+        ChangeMotorSound();
     }
 
     public void SetColor(Color newColor, bool isInstant = false)
@@ -81,10 +86,36 @@ public class Player : MonoBehaviour
         return playerColor;
     }
 
+    private void ChangeMotorSound()
+    {
+        if (targetSpeed <= minSpeed + 0.1f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed1);
+        else if (targetSpeed <= minSpeed + 0.2f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed2);
+        else if (targetSpeed <= minSpeed + 0.3f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed3);
+        else if (targetSpeed <= minSpeed + 0.4f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed4);
+        else if (targetSpeed <= minSpeed + 0.5f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed5);
+        else if (targetSpeed <= minSpeed + 0.6f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed6);
+        else if (targetSpeed <= minSpeed + 0.7f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed7);
+        else if (targetSpeed <= minSpeed + 0.8f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed8);
+        else if (targetSpeed <= minSpeed + 0.9f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed9);
+        else if (targetSpeed <= minSpeed + 1f)
+            AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed10);
+    }
+
     #region Lane
 
     public void SwitchLane(bool isRightPressed)
     {
+        AudioManager.instance.PlayOneShot(SoundType.LaneChange);
+
         //lane conversion
         if (currentLane == Lane.Left)
         {

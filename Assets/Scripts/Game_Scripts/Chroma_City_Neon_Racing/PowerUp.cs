@@ -1,3 +1,4 @@
+using Chroma_City_Neon_Racing;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
@@ -16,10 +17,12 @@ public class PowerUp : MonoBehaviour
 
             if (powerUpMat.color == player.GetColor() || player.GetColor() == Color.white)
             {
+                AudioManager.instance.PlayOneShot(SoundType.CorrectPowerUp);
                 player.ChangeSpeed(true);
             }
             else
             {
+                AudioManager.instance.PlayOneShot(SoundType.WrongPowerUp);
                 player.ChangeSpeed(false);
                 Instantiate(wrongParticle, transform.position, Quaternion.identity, transform);
             }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Chroma_City_Neon_Racing;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -25,6 +26,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
+            AudioManager.instance.PlayOneShot(SoundType.Checkpoint);
             Debug.LogWarning("Player Passed Checkpoint");
             player.SetColor(colorMat.color);
         }

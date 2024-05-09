@@ -16,7 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Material playerMat;
     [SerializeField] private Color playerColor;
     [SerializeField] private float colorTime;
-    private float minSpeed, maxSpeed;
+    private float minSpeed;
+    private float maxSpeed;
     private float speedChangeAmount;
     private float speedPenatlyAmount;
 
@@ -57,13 +58,13 @@ public class Player : MonoBehaviour
         if (isUp)
         {
             targetSpeed += speedChangeAmount;
+            targetSpeed = Mathf.Min(targetSpeed, maxSpeed);
         }
         else
         {
             StartCoroutine(SlowDownRoutine());
         }
 
-        Mathf.Max(targetSpeed, levelManager.MinPlayerSpeed);
         ChangeMotorSound();
     }
 
@@ -121,6 +122,12 @@ public class Player : MonoBehaviour
     public void SetSpeedPenaltyAmount(float val)
     {
         speedPenatlyAmount = val;
+    }
+
+    public void SetMinMaxSpeed(float min, float max)
+    {
+        minSpeed = min;
+        maxSpeed = max;
     }
 
     #region Lane
@@ -199,8 +206,8 @@ public class Player : MonoBehaviour
         targetSpeed = 0f;
         modelTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato);
         yield return new WaitForSeconds(0.33f);
-        targetSpeed = tempSpeed - speedPenatlyAmount;
-        Mathf.Max(targetSpeed, 0.25f);
+        targetSpeed = tempSpeed + speedPenatlyAmount;
+        targetSpeed = Mathf.Max(targetSpeed, minSpeed);
     }
 }
 

@@ -13,9 +13,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private LevelSO levelSO;
     [SerializeField] private List<LevelSO> levels = new List<LevelSO>();
 
-    public float MinPlayerSpeed => minSpeed;
-    public float MaxPlayerSpeed => maxSpeed;
-    private float minSpeed, maxSpeed;
+    private float minSpeed;
+    private float maxSpeed;
     private float ballSpeedChangeAmount;
     private float speedPenatlyAmount;
     private int pathLength;
@@ -88,7 +87,7 @@ public class LevelManager : MonoBehaviour
 
             case GameState.Racing:
                 isLevelTimerOn = true;
-                player.SetTargetSpeed(MinPlayerSpeed);
+                player.SetTargetSpeed(minSpeed);
                 break;
 
             case GameState.Failed:
@@ -97,7 +96,7 @@ public class LevelManager : MonoBehaviour
 
             case GameState.Success:
                 isLevelTimerOn = false;
-                player.SetTargetSpeed(MinPlayerSpeed);
+                player.SetTargetSpeed(minSpeed);
                 mainCamera.DetachFromPlayer();
                 break;
 
@@ -127,7 +126,8 @@ public class LevelManager : MonoBehaviour
         maxScore = levelSO.maxScore;
 
         player.SetSpeedChangeAmount(ballSpeedChangeAmount);
-        player.SetSpeedChangeAmount(speedPenatlyAmount);
+        player.SetSpeedPenaltyAmount(speedPenatlyAmount);
+        player.SetMinMaxSpeed(minSpeed, maxSpeed);
         roadGenerator.SetPathLength(pathLength);
         levelTimer = timeLimit;
     }

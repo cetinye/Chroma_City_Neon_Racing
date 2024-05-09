@@ -7,7 +7,30 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private UIManager uiManager;
+
+    [Header("Level Variables")]
+    [SerializeField] private int levelId;
+    [SerializeField] private LevelSO levelSO;
+    [SerializeField] private List<LevelSO> levels = new List<LevelSO>();
+
+    public float MinPlayerSpeed => minSpeed;
+    public float MaxPlayerSpeed => maxSpeed;
+    private float minSpeed, maxSpeed;
+    private float ballSpeedChangeAmount;
+    private float speedPenatlyAmount;
+    private int pathLength;
+    private int shieldPowerupCount;
+    private int speedPowerupCount;
+    private int timePowerupCount;
+    private int durationOfPowerups;
+    private int timeLimit;
+    private int maxScore;
+    private bool isLevelTimerOn = false;
+    private float levelTimer;
+
+    [Header("Components")]
     [SerializeField] private Player player;
+    [SerializeField] private RoadGenerator roadGenerator;
     [SerializeField] private CameraFollow mainCamera;
     [SerializeField] private GameObject checkpointGenerator;
     private FinishLine finish;
@@ -28,9 +51,32 @@ public class LevelManager : MonoBehaviour
         GameStateManager.OnGameStateChanged += OnGameStateChanged;
         GameStateManager.SetGameState(GameState.Idle);
 
+        AssignLevelVariables();
+
         ColorCheckpoints();
         AudioManager.instance.PlayOneShot(SoundType.MotorStart);
         StartTrafficLight();
+    }
+
+    void Update()
+    {
+        LevelTimer();
+    }
+
+    void LevelTimer()
+    {
+        if (!isLevelTimerOn) return;
+
+        levelTimer -= Time.deltaTime;
+        uiManager.UpdateTimer(levelTimer);
+
+        if (levelTimer <= 0)
+        {
+            isLevelTimerOn = false;
+            levelTimer = 0;
+            uiManager.UpdateTimer(levelTimer);
+            GameStateManager.SetGameState(GameState.Failed);
+        }
     }
 
     private void OnGameStateChanged()
@@ -41,14 +87,17 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case GameState.Racing:
-                player.SetTargetSpeed(1f);
+                isLevelTimerOn = true;
+                player.SetTargetSpeed(MinPlayerSpeed);
                 break;
 
             case GameState.Failed:
+                isLevelTimerOn = false;
                 break;
 
             case GameState.Success:
-                player.SetTargetSpeed(1f);
+                isLevelTimerOn = false;
+                player.SetTargetSpeed(MinPlayerSpeed);
                 mainCamera.DetachFromPlayer();
                 break;
 
@@ -58,6 +107,32 @@ public class LevelManager : MonoBehaviour
 
         uiManager.UpdateGameStateText(GameStateManager.GetGameState().ToString());
     }
+
+    private void AssignLevelVariables()
+    {
+        levelSO = levels[levelId];
+
+        minSpeed = levelSO.minSpeedRange;
+        maxSpeed = levelSO.maxSpeedRange;
+        ballSpeedChangeAmount = levelSO.ballSpeedChangeAmount;
+        speedPenatlyAmount = levelSO.speedPenatlyAmount;
+        pathLength = levelSO.pathLength;
+
+        shieldPowerupCount = levelSO.shieldPowerupCount;
+        speedPowerupCount = levelSO.speedPowerupCount;
+        timePowerupCount = levelSO.timePowerupCount;
+        durationOfPowerups = levelSO.durationOfPowerups;
+
+        timeLimit = levelSO.timeLimit;
+        maxScore = levelSO.maxScore;
+
+        player.SetSpeedChangeAmount(ballSpeedChangeAmount);
+        player.SetSpeedChangeAmount(speedPenatlyAmount);
+        roadGenerator.SetPathLength(pathLength);
+        levelTimer = timeLimit;
+    }
+
+    #region Input Controls
 
     public void RightPressed()
     {
@@ -70,6 +145,8 @@ public class LevelManager : MonoBehaviour
         Debug.LogWarning("Left");
         player.SwitchLane(false);
     }
+
+    #endregion
 
     private void ColorCheckpoints()
     {

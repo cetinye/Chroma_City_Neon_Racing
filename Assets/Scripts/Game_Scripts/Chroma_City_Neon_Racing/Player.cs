@@ -7,15 +7,18 @@ using Chroma_City_Neon_Racing;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private LevelManager levelManager;
+
     [Header("Player Variables")]
     [SerializeField] private SplineFollower splineFollower;
-    [SerializeField] private float speedChangeAmount;
     [SerializeField] private float targetSpeed;
     [SerializeField] private float lerpFactor;
     [SerializeField] private Material playerMat;
     [SerializeField] private Color playerColor;
     [SerializeField] private float colorTime;
     private float minSpeed, maxSpeed;
+    private float speedChangeAmount;
+    private float speedPenatlyAmount;
 
     [Header("Player Shake Variables")]
     [SerializeField] private float shakeDuration;
@@ -60,7 +63,7 @@ public class Player : MonoBehaviour
             StartCoroutine(SlowDownRoutine());
         }
 
-        Mathf.Max(targetSpeed, 0.25f);
+        Mathf.Max(targetSpeed, levelManager.MinPlayerSpeed);
         ChangeMotorSound();
     }
 
@@ -110,10 +113,22 @@ public class Player : MonoBehaviour
             AudioManager.instance.PlayMotorSound(SoundType.MotorSpeed10);
     }
 
+    public void SetSpeedChangeAmount(float val)
+    {
+        speedChangeAmount = val;
+    }
+
+    public void SetSpeedPenaltyAmount(float val)
+    {
+        speedPenatlyAmount = val;
+    }
+
     #region Lane
 
     public void SwitchLane(bool isRightPressed)
     {
+        if (GameStateManager.GetGameState() != GameState.Racing) return;
+
         AudioManager.instance.PlayOneShot(SoundType.LaneChange);
 
         //lane conversion
@@ -184,7 +199,7 @@ public class Player : MonoBehaviour
         targetSpeed = 0f;
         modelTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato);
         yield return new WaitForSeconds(0.33f);
-        targetSpeed = tempSpeed - speedChangeAmount;
+        targetSpeed = tempSpeed - speedPenatlyAmount;
         Mathf.Max(targetSpeed, 0.25f);
     }
 }

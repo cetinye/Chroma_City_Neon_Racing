@@ -174,6 +174,11 @@ public class RoadGenerator : MonoBehaviour
         }
     }
 
+    public void SetPathLength(int newPathLength)
+    {
+        pointAmount = newPathLength;
+    }
+
     IEnumerator RemoveExcessRoutine(SplineComputer splineComputer)
     {
         yield return new WaitForSeconds(1f);

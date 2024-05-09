@@ -43,6 +43,22 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void LoadLevel(bool isNextLevel)
+    {
+        if (isNextLevel)
+        {
+            levelId++;
+        }
+        else
+        {
+            levelId--;
+        }
+
+        levelId = Mathf.Clamp(levelId, 0, levels.Count - 1);
+        PlayerPrefs.SetInt("CCNR_levelId", levelId);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     void Start()
     {
         AudioManager.instance.Play(SoundType.Background);
@@ -62,6 +78,8 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         LevelTimer();
+
+        uiManager.UpdateDebugTexts(GameStateManager.GetGameState().ToString(), levelId, roadGenerator.pointAmount, player.GetFollowSpeed());
     }
 
     void LevelTimer()
@@ -105,12 +123,11 @@ public class LevelManager : MonoBehaviour
             default:
                 break;
         }
-
-        uiManager.UpdateGameStateText(GameStateManager.GetGameState().ToString());
     }
 
     private void AssignLevelVariables()
     {
+        levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
         levelSO = levels[levelId];
 
         minSpeed = levelSO.minSpeedRange;

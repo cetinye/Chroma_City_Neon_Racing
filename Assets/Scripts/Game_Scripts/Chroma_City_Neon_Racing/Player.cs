@@ -74,6 +74,11 @@ public class Player : MonoBehaviour
         ChangeMotorSound();
     }
 
+    public float GetFollowSpeed()
+    {
+        return splineFollower.followSpeed;
+    }
+
     public void SetColor(Color newColor, bool isInstant = false)
     {
         // playerMat.color = newColor;

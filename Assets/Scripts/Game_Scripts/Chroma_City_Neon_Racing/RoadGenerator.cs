@@ -25,7 +25,7 @@ public class RoadGenerator : MonoBehaviour
     [Header("Building Variables")]
     [SerializeField] private float buildingOffsetToRoad;
 
-    void Awake()
+    public void SpawnLevel()
     {
         SpawnPoints(pointAmount);
         RandomizePointsOnX(minX, maxX, pointAmountToRandomize);

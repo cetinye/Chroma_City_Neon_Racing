@@ -52,6 +52,8 @@ public class LevelManager : MonoBehaviour
 
         AssignLevelVariables();
 
+        roadGenerator.SpawnLevel();
+
         ColorCheckpoints();
         AudioManager.instance.PlayOneShot(SoundType.MotorStart);
         StartTrafficLight();

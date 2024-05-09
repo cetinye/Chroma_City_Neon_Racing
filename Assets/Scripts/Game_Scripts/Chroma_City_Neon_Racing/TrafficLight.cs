@@ -26,8 +26,8 @@ public class TrafficLight : MonoBehaviour
 
     IEnumerator CountdownRoutine()
     {
-        AudioManager.instance.PlayAfterXSeconds(SoundType.Countdown, 0.2f);
         yield return new WaitForSeconds(1f);
+        AudioManager.instance.PlayAfterXSeconds(SoundType.Countdown, 0.2f);
 
         int colorIndex = 0;
 

@@ -12,7 +12,6 @@ public class RoadGenerator : MonoBehaviour
     public SplineComputer splineComputerBuildings;
     public SplineComputer splineComputerCheckpoints;
     public SplineComputer splineComputerPowerUps;
-    public SplineComputer splineComputerPowerUps2;
     public SplineFollower splineFollower;
 
     [Header("Variables")]
@@ -33,6 +32,21 @@ public class RoadGenerator : MonoBehaviour
         CreateCheckpointsSpline();
         CreatePowerUpsSpline();
         Invoke(nameof(RemoveExcessObjects), 1f);
+    }
+
+    public void Reset()
+    {
+        SplinePoint[] points = new SplinePoint[0];
+
+        splineComputerRoad.SetPoints(points);
+        splineComputerBuildings.SetPoints(points);
+        splineComputerCheckpoints.SetPoints(points);
+        splineComputerPowerUps.SetPoints(points);
+
+        // splineComputerRoad.Close();
+        // splineComputerBuildings.Close();
+        // splineComputerCheckpoints.Close();
+        // splineComputerPowerUps.Close();
     }
 
     void SpawnPoints(int pointAmount)
@@ -177,6 +191,11 @@ public class RoadGenerator : MonoBehaviour
     public void SetPathLength(int newPathLength)
     {
         pointAmount = newPathLength;
+    }
+
+    public Vector3 GetRandomPointPos()
+    {
+        return splineComputerRoad.GetPointPosition(Random.Range(2, splineComputerRoad.pointCount));
     }
 
     IEnumerator RemoveExcessRoutine(SplineComputer splineComputer)

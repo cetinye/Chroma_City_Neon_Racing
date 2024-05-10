@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager instance;
     [SerializeField] private UIManager uiManager;
 
     [Header("Level Variables")]
@@ -18,14 +19,15 @@ public class LevelManager : MonoBehaviour
     private float ballSpeedChangeAmount;
     private float speedPenatlyAmount;
     private int pathLength;
-    private int shieldPowerupCount;
-    private int speedPowerupCount;
-    private int timePowerupCount;
+    private int shieldPowerup;
+    private int speedPowerup;
+    private int timePowerup;
     private int durationOfPowerups;
     private int timeLimit;
     private int maxScore;
     private bool isLevelTimerOn = false;
     private float levelTimer;
+    private List<Vector3> usedPositions = new List<Vector3>();
 
     [Header("Components")]
     [SerializeField] private Player player;
@@ -33,10 +35,14 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private CameraFollow mainCamera;
     [SerializeField] private GameObject checkpointGenerator;
     private FinishLine finish;
+    private TrafficLight trafficLight;
 
     [Header("Instantiate Prefabs")]
     [SerializeField] private TrafficLight trafficLightPref;
     [SerializeField] private FinishLine finishPref;
+    [SerializeField] private SpecialPowerUp shieldPowerUpPref;
+    [SerializeField] private SpecialPowerUp speedPowerUpPref;
+    [SerializeField] private SpecialPowerUp timePowerUpPref;
 
     public void Restart()
     {
@@ -45,6 +51,9 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel(bool isNextLevel)
     {
+        //TODO: Oyunda her seviyeyi çarpmadan sorunsuz bir şekilde tamamlamak bir üst seviyeye geçmemizi sağlayacaktır.
+        //TODO: Eğer bir bölümde çıkan enerj toplarından yanlış olanı alırsak, yani engele çarptığımız taktirde bölümü tekrar oynayacağız, 2 sefer daha aynı bölümü oynamamıza rağmen hala çarpma yaşıyorsak seviyemiz bir tane düşecektir.
+
         if (isNextLevel)
         {
             levelId++;
@@ -56,10 +65,31 @@ public class LevelManager : MonoBehaviour
 
         levelId = Mathf.Clamp(levelId, 0, levels.Count - 1);
         PlayerPrefs.SetInt("CCNR_levelId", levelId);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        DeleteScene();
+        StartGame();
+    }
+
+    void Awake()
+    {
+        instance = this;
     }
 
     void Start()
+    {
+        StartGame();
+    }
+
+    void Update()
+    {
+        LevelTimer();
+
+        uiManager.UpdateDebugTexts(GameStateManager.GetGameState().ToString(), levelId, roadGenerator.pointAmount, player.GetFollowSpeed());
+    }
+
+    void StartGame()
     {
         AudioManager.instance.Play(SoundType.Background);
 
@@ -71,15 +101,19 @@ public class LevelManager : MonoBehaviour
         roadGenerator.SpawnLevel();
 
         ColorCheckpoints();
+        SpawnSpecialPowerUps();
         AudioManager.instance.PlayOneShot(SoundType.MotorStart);
         StartTrafficLight();
     }
 
-    void Update()
+    void DeleteScene()
     {
-        LevelTimer();
-
-        uiManager.UpdateDebugTexts(GameStateManager.GetGameState().ToString(), levelId, roadGenerator.pointAmount, player.GetFollowSpeed());
+        isLevelTimerOn = false;
+        player.Reset();
+        roadGenerator.Reset();
+        Destroy(finish.gameObject);
+        Destroy(trafficLight.gameObject);
+        usedPositions.Clear();
     }
 
     void LevelTimer()
@@ -136,9 +170,9 @@ public class LevelManager : MonoBehaviour
         speedPenatlyAmount = levelSO.speedPenatlyAmount;
         pathLength = levelSO.pathLength;
 
-        shieldPowerupCount = levelSO.shieldPowerupCount;
-        speedPowerupCount = levelSO.speedPowerupCount;
-        timePowerupCount = levelSO.timePowerupCount;
+        shieldPowerup = levelSO.shieldPowerup;
+        speedPowerup = levelSO.speedPowerup;
+        timePowerup = levelSO.timePowerup;
         durationOfPowerups = levelSO.durationOfPowerups;
 
         timeLimit = levelSO.timeLimit;
@@ -184,8 +218,63 @@ public class LevelManager : MonoBehaviour
 
     private void StartTrafficLight()
     {
-        TrafficLight trafficLight = Instantiate(trafficLightPref);
+        trafficLight = Instantiate(trafficLightPref);
         trafficLight.StartCountdown();
+    }
+
+    private void SpawnSpecialPowerUps()
+    {
+        Quaternion rotation = Quaternion.Euler(-90f, 0f, 0f);
+
+        int shieldPowerupCount = Random.Range(1, 4);
+        int speedPowerupCount = Random.Range(1, 4);
+        int timePowerupCount = Random.Range(1, 4);
+
+        if (shieldPowerup == 1)
+        {
+            for (int i = 0; i < shieldPowerupCount; i++)
+            {
+                SpecialPowerUp shield = Instantiate(shieldPowerUpPref, GetRandomPointPos(), rotation);
+                shield.SetDuration(levelSO.durationOfPowerups);
+            }
+        }
+
+        if (speedPowerup == 1)
+        {
+            for (int i = 0; i < speedPowerupCount; i++)
+            {
+                SpecialPowerUp speed = Instantiate(speedPowerUpPref, GetRandomPointPos(), rotation);
+                speed.SetDuration(levelSO.durationOfPowerups);
+                speed.SetAddSpeedAmount(1f);
+            }
+        }
+
+        if (timePowerup == 1)
+        {
+            for (int i = 0; i < timePowerupCount; i++)
+            {
+
+                SpecialPowerUp time = Instantiate(timePowerUpPref, GetRandomPointPos(), rotation);
+                time.SetDuration(levelSO.durationOfPowerups);
+                time.SetTimeToAdd(5f);
+            }
+        }
+
+    }
+
+    private Vector3 GetRandomPointPos()
+    {
+        Vector3 pos;
+        do
+        {
+            pos = roadGenerator.GetRandomPointPos();
+
+        } while (usedPositions.Contains(pos));
+
+        usedPositions.Add(pos);
+
+        pos = new Vector3(pos.x, 0.102f, pos.z);
+        return pos;
     }
 
     public void SpawnFinish()
@@ -214,5 +303,10 @@ public class LevelManager : MonoBehaviour
     public Vector3 GetFinishPosition()
     {
         return finish.transform.position;
+    }
+
+    public void AddTime(float timeToAdd)
+    {
+        levelTimer += timeToAdd;
     }
 }

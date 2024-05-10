@@ -8,9 +8,9 @@ public class LevelSO : ScriptableObject
     public float ballSpeedChangeAmount;
     public float speedPenatlyAmount;
     public int pathLength;
-    public int shieldPowerupCount;
-    public int speedPowerupCount;
-    public int timePowerupCount;
+    public int shieldPowerup;
+    public int speedPowerup;
+    public int timePowerup;
     public int durationOfPowerups;
     public int timeLimit;
     public int maxScore;

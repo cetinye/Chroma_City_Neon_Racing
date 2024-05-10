@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private float maxSpeed;
     private float speedChangeAmount;
     private float speedPenatlyAmount;
+    private bool isShieldActive;
 
     [Header("Player Shake Variables")]
     [SerializeField] private float shakeDuration;
@@ -68,15 +69,37 @@ public class Player : MonoBehaviour
         ChangeMotorSound();
     }
 
-    public void SetTargetSpeed(float val)
+    public void SetTargetSpeed(float val, bool isInstant = false)
     {
-        targetSpeed = val;
-        ChangeMotorSound();
+        if (isInstant)
+        {
+            splineFollower.followSpeed = val;
+        }
+        else
+        {
+            targetSpeed = val;
+            ChangeMotorSound();
+        }
+    }
+
+    public float GetTargetSpeed()
+    {
+        return targetSpeed;
     }
 
     public float GetFollowSpeed()
     {
         return splineFollower.followSpeed;
+    }
+
+    public void SetShieldState(bool val)
+    {
+        isShieldActive = val;
+    }
+
+    public bool GetSheldState()
+    {
+        return isShieldActive;
     }
 
     public void SetColor(Color newColor, bool isInstant = false)
@@ -133,6 +156,12 @@ public class Player : MonoBehaviour
     {
         minSpeed = min;
         maxSpeed = max;
+    }
+
+    public void Reset()
+    {
+        splineFollower.followSpeed = 0;
+        splineFollower.SetPercent(0);
     }
 
     #region Lane

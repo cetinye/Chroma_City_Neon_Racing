@@ -22,9 +22,16 @@ public class PowerUp : MonoBehaviour
             }
             else
             {
-                AudioManager.instance.PlayOneShot(SoundType.WrongPowerUp);
-                player.ChangeSpeed(false);
-                Instantiate(wrongParticle, transform.position, Quaternion.identity, transform);
+                if (!player.GetSheldState())
+                {
+                    AudioManager.instance.PlayOneShot(SoundType.WrongPowerUp);
+                    player.ChangeSpeed(false);
+                    Instantiate(wrongParticle, transform.position, Quaternion.identity, transform);
+                }
+                else
+                {
+                    // Shield protected
+                }
             }
 
             meshRenderer.enabled = false;

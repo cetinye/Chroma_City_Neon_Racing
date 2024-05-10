@@ -32,9 +32,9 @@ namespace Chroma_City_Neon_Racing
                 level.ballSpeedChangeAmount = float.Parse(splitData[3]);
                 level.speedPenatlyAmount = float.Parse(splitData[4]);
                 level.pathLength = int.Parse(splitData[5]);
-                level.shieldPowerupCount = int.Parse(splitData[6]);
-                level.speedPowerupCount = int.Parse(splitData[7]);
-                level.timePowerupCount = int.Parse(splitData[8]);
+                level.shieldPowerup = int.Parse(splitData[6]);
+                level.speedPowerup = int.Parse(splitData[7]);
+                level.timePowerup = int.Parse(splitData[8]);
                 level.durationOfPowerups = int.Parse(splitData[9]);
                 level.timeLimit = int.Parse(splitData[10]);
                 level.maxScore = int.Parse(splitData[11]);

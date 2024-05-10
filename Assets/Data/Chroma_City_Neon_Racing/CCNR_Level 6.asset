@@ -18,9 +18,9 @@ MonoBehaviour:
   ballSpeedChangeAmount: 0.1
   speedPenatlyAmount: -0.3
   pathLength: 18
-  shieldPowerupCount: 1
-  speedPowerupCount: 0
-  timePowerupCount: 0
+  shieldPowerup: 1
+  speedPowerup: 0
+  timePowerup: 0
   durationOfPowerups: 5
   timeLimit: 75
   maxScore: 94

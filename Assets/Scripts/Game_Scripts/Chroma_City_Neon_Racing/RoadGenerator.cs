@@ -16,10 +16,11 @@ public class RoadGenerator : MonoBehaviour
 
     [Header("Variables")]
     public int pointAmount;
-    public int pointAmountToRandomize;
+    private int pointAmountToRandomize;
     public float minX;
     public float maxX;
     public float distBetweenRoads;
+    private List<int> randomizedPoints = new List<int>();
 
     [Header("Building Variables")]
     [SerializeField] private float buildingOffsetToRoad;
@@ -27,6 +28,7 @@ public class RoadGenerator : MonoBehaviour
     public void SpawnLevel()
     {
         SpawnPoints(pointAmount);
+        pointAmountToRandomize = Mathf.CeilToInt(pointAmount / 2);
         RandomizePointsOnX(minX, maxX, pointAmountToRandomize);
         CreateBuildingsSpline();
         CreateCheckpointsSpline();
@@ -43,10 +45,7 @@ public class RoadGenerator : MonoBehaviour
         splineComputerCheckpoints.SetPoints(points);
         splineComputerPowerUps.SetPoints(points);
 
-        // splineComputerRoad.Close();
-        // splineComputerBuildings.Close();
-        // splineComputerCheckpoints.Close();
-        // splineComputerPowerUps.Close();
+        randomizedPoints.Clear();
     }
 
     void SpawnPoints(int pointAmount)
@@ -71,12 +70,29 @@ public class RoadGenerator : MonoBehaviour
         SplinePoint[] points = new SplinePoint[splineComputerRoad.pointCount];
         points = splineComputerRoad.GetPoints();
 
-        for (int i = 2; i < pointAmountToRandomize + 2; i++)
+        for (int i = 0; i < pointAmountToRandomize; i++)
         {
-            points[i].position = new Vector3(UnityEngine.Random.Range(minX, maxX), points[i].position.y, points[i].position.z);
+            int index = GetRandomPointIdxToRandomize();
+            points[index].position = new Vector3(UnityEngine.Random.Range(minX, maxX), points[index].position.y, points[index].position.z);
         }
 
         splineComputerRoad.SetPoints(points);
+    }
+
+    int GetRandomPointIdxToRandomize()
+    {
+        int index;
+        SplinePoint[] points = new SplinePoint[splineComputerRoad.pointCount];
+        points = splineComputerRoad.GetPoints();
+
+        do
+        {
+            index = Random.Range(2, points.Length - 2);
+
+        } while (randomizedPoints.Contains(index));
+
+        randomizedPoints.Add(index);
+        return index;
     }
 
     void CreateBuildingsSpline()
@@ -162,7 +178,9 @@ public class RoadGenerator : MonoBehaviour
         splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
 
         CreateBuildingsSpline();
+        CreatePowerUpsSpline();
         StartCoroutine(RemoveExcessRoutine(splineComputerBuildings));
+        StartCoroutine(RemoveExcessRoutine(splineComputerPowerUps));
     }
 
     private void RemoveObjectsAfter()

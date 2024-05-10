@@ -161,7 +161,7 @@ public class LevelManager : MonoBehaviour
 
     private void AssignLevelVariables()
     {
-        levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
+        //levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
         levelSO = levels[levelId];
 
         minSpeed = levelSO.minSpeedRange;

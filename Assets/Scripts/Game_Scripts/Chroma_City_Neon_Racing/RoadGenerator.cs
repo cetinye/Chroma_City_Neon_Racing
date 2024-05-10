@@ -181,6 +181,7 @@ public class RoadGenerator : MonoBehaviour
         CreatePowerUpsSpline();
         StartCoroutine(RemoveExcessRoutine(splineComputerBuildings));
         StartCoroutine(RemoveExcessRoutine(splineComputerPowerUps));
+        Invoke(nameof(RemoveObjectsAfter), 1f);
     }
 
     private void RemoveObjectsAfter()

@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Dreamteck.Splines;
 using Chroma_City_Neon_Racing;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -38,6 +39,11 @@ public class Player : MonoBehaviour
     Sequence laneSwitchSeq;
     private Lane currentLane = Lane.Middle;
 
+    [Header("Shield Variables")]
+    [SerializeField] private GameObject shield;
+    [SerializeField] private Material shieldMaterial;
+    [SerializeField] private float targetShieldFade;
+
     void Awake()
     {
         SetColor(Color.white, true);
@@ -45,11 +51,15 @@ public class Player : MonoBehaviour
 
     void OnDisable()
     {
+        GameEvents.instance.shieldPickedUp -= OnShieldPickedUp;
+
         SetColor(Color.white, true);
     }
 
     void Start()
     {
+        GameEvents.instance.shieldPickedUp += OnShieldPickedUp;
+
         targetSpeed = splineFollower.followSpeed;
     }
 
@@ -100,6 +110,27 @@ public class Player : MonoBehaviour
     public void SetShieldState(bool val)
     {
         isShieldActive = val;
+
+        if (val)
+        {
+            shieldMaterial.DOFade(0f, 0f);
+            shield.SetActive(true);
+            shieldMaterial.DOFade(targetShieldFade, 1f).SetEase(Ease.InOutSine);
+        }
+        else
+        {
+            shieldMaterial.DOFade(0f, 1f).SetEase(Ease.InOutSine).OnComplete(() => shield.SetActive(false));
+        }
+    }
+
+    public void FlashShield()
+    {
+        shieldMaterial.DOFade(0f, 0.5f).SetEase(Ease.InOutSine).OnComplete(() => shieldMaterial.DOFade(targetShieldFade, 0.5f).SetEase(Ease.InOutSine));
+    }
+
+    private void OnShieldPickedUp()
+    {
+
     }
 
     public bool GetShieldState()

@@ -26,6 +26,8 @@ public class SpecialPowerUp : MonoBehaviour
                 case PowerUpType.Shield:
                     player.SetShieldState(true);
                     GameEvents.instance.ShieldPickedUp();
+                    Invoke(nameof(FlashShield), durationOfPowerups - 2f);
+                    Invoke(nameof(FlashShield), durationOfPowerups - 1f);
                     Invoke(nameof(Disable), durationOfPowerups);
                     break;
                 case PowerUpType.Speed:
@@ -61,6 +63,11 @@ public class SpecialPowerUp : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    void FlashShield()
+    {
+        player.FlashShield();
     }
 
     public void SetDuration(float val)

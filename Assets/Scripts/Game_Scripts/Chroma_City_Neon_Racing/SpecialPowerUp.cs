@@ -25,14 +25,17 @@ public class SpecialPowerUp : MonoBehaviour
             {
                 case PowerUpType.Shield:
                     player.SetShieldState(true);
+                    GameEvents.instance.ShieldPickedUp();
                     Invoke(nameof(Disable), durationOfPowerups);
                     break;
                 case PowerUpType.Speed:
                     player.SetTargetSpeed(player.GetTargetSpeed() + addSpeedAmount);
+                    GameEvents.instance.SpeedPickedUp();
                     Invoke(nameof(Disable), durationOfPowerups);
                     break;
                 case PowerUpType.Time:
                     LevelManager.instance.AddTime(timeToAdd);
+                    GameEvents.instance.TimePickedUp();
                     Invoke(nameof(Disable), durationOfPowerups);
                     break;
                 default:

@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
         isShieldActive = val;
     }
 
-    public bool GetSheldState()
+    public bool GetShieldState()
     {
         return isShieldActive;
     }

@@ -22,7 +22,7 @@ public class PowerUp : MonoBehaviour
             }
             else
             {
-                if (!player.GetSheldState())
+                if (!player.GetShieldState())
                 {
                     AudioManager.instance.PlayOneShot(SoundType.WrongPowerUp);
                     player.ChangeSpeed(false);

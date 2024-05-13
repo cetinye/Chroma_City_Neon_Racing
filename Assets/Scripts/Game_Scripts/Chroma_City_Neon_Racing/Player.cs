@@ -43,6 +43,11 @@ public class Player : MonoBehaviour
         SetColor(Color.white, true);
     }
 
+    void OnDisable()
+    {
+        SetColor(Color.white, true);
+    }
+
     void Start()
     {
         targetSpeed = splineFollower.followSpeed;

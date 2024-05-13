@@ -43,4 +43,10 @@ public class PowerUp : MonoBehaviour
     {
         isCollideable = state;
     }
+
+    public void Reset()
+    {
+        isCollideable = true;
+        meshRenderer.enabled = true;
+    }
 }

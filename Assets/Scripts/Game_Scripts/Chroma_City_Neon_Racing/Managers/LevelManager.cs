@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour
     private bool isLevelTimerOn = false;
     private float levelTimer;
     private List<Vector3> usedPositions = new List<Vector3>();
+    private List<SpecialPowerUp> spawnedSpecialPowerUps = new List<SpecialPowerUp>();
 
     [Header("Components")]
     [SerializeField] private Player player;
@@ -114,6 +115,13 @@ public class LevelManager : MonoBehaviour
         Destroy(finish.gameObject);
         Destroy(trafficLight.gameObject);
         usedPositions.Clear();
+
+        foreach (SpecialPowerUp powerUp in spawnedSpecialPowerUps)
+        {
+            Destroy(powerUp.gameObject);
+        }
+
+        spawnedSpecialPowerUps.Clear();
     }
 
     void LevelTimer()
@@ -236,6 +244,7 @@ public class LevelManager : MonoBehaviour
             {
                 SpecialPowerUp shield = Instantiate(shieldPowerUpPref, GetRandomPointPos(), rotation);
                 shield.SetDuration(levelSO.durationOfPowerups);
+                spawnedSpecialPowerUps.Add(shield);
             }
         }
 
@@ -246,6 +255,7 @@ public class LevelManager : MonoBehaviour
                 SpecialPowerUp speed = Instantiate(speedPowerUpPref, GetRandomPointPos(), rotation);
                 speed.SetDuration(levelSO.durationOfPowerups);
                 speed.SetAddSpeedAmount(1f);
+                spawnedSpecialPowerUps.Add(speed);
             }
         }
 
@@ -257,6 +267,7 @@ public class LevelManager : MonoBehaviour
                 SpecialPowerUp time = Instantiate(timePowerUpPref, GetRandomPointPos(), rotation);
                 time.SetDuration(levelSO.durationOfPowerups);
                 time.SetTimeToAdd(5f);
+                spawnedSpecialPowerUps.Add(time);
             }
         }
 

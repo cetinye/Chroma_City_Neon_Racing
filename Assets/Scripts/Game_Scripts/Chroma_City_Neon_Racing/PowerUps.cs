@@ -33,4 +33,12 @@ public class PowerUps : MonoBehaviour
             powerUp.SetIsCollideable(false);
         }
     }
+
+    public void Reset()
+    {
+        foreach (PowerUp powerUp in powerUps)
+        {
+            powerUp.Reset();
+        }
+    }
 }

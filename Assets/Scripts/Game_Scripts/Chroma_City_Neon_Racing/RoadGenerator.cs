@@ -12,6 +12,7 @@ public class RoadGenerator : MonoBehaviour
     public SplineComputer splineComputerBuildings;
     public SplineComputer splineComputerCheckpoints;
     public SplineComputer splineComputerPowerUps;
+    public GameObject streetLights;
     public SplineFollower splineFollower;
 
     [Header("Variables")]
@@ -46,6 +47,12 @@ public class RoadGenerator : MonoBehaviour
         splineComputerPowerUps.SetPoints(points);
 
         randomizedPoints.Clear();
+
+        for (int i = 0; i < splineComputerPowerUps.transform.childCount; i++)
+        {
+            splineComputerPowerUps.transform.GetChild(i).TryGetComponent<PowerUps>(out PowerUps powerUps);
+            powerUps.Reset();
+        }
     }
 
     void SpawnPoints(int pointAmount)
@@ -182,6 +189,7 @@ public class RoadGenerator : MonoBehaviour
         StartCoroutine(RemoveExcessRoutine(splineComputerBuildings));
         StartCoroutine(RemoveExcessRoutine(splineComputerPowerUps));
         Invoke(nameof(RemoveObjectsAfter), 1f);
+        // Invoke(nameof(MarkObjectsStatic), 2f);
     }
 
     private void RemoveObjectsAfter()
@@ -215,6 +223,16 @@ public class RoadGenerator : MonoBehaviour
     public Vector3 GetRandomPointPos()
     {
         return splineComputerRoad.GetPointPosition(Random.Range(2, splineComputerRoad.pointCount));
+    }
+
+    public void MarkObjectsStatic()
+    {
+        Debug.LogWarning("Marking objects static");
+        StaticBatchingUtility.Combine(splineComputerRoad.gameObject);
+        StaticBatchingUtility.Combine(splineComputerBuildings.gameObject);
+        StaticBatchingUtility.Combine(splineComputerCheckpoints.gameObject);
+        StaticBatchingUtility.Combine(splineComputerPowerUps.gameObject);
+        StaticBatchingUtility.Combine(streetLights);
     }
 
     IEnumerator RemoveExcessRoutine(SplineComputer splineComputer)

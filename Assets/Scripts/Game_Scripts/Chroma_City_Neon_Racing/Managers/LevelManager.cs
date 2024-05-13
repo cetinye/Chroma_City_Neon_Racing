@@ -288,7 +288,7 @@ public class LevelManager : MonoBehaviour
 
         usedPositions.Add(pos);
 
-        pos = new Vector3(pos.x, 0.102f, pos.z);
+        pos = new Vector3(pos.x + 0.02f, 0.102f, pos.z);
         return pos;
     }
 

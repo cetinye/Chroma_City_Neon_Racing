@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Chroma_City_Neon_Racing;
 using UnityEngine;
@@ -13,6 +12,7 @@ public class Checkpoint : MonoBehaviour
     void Awake()
     {
         colorMat = meshRenderer.materials[1];
+        //Invoke(nameof(DisablePowerUps), 3f);
     }
 
     public void SetRandomColor()
@@ -29,6 +29,21 @@ public class Checkpoint : MonoBehaviour
             AudioManager.instance.PlayOneShot(SoundType.Checkpoint);
             Debug.LogWarning("Player Passed Checkpoint");
             player.SetColor(colorMat.color);
+        }
+    }
+
+    void DisablePowerUps()
+    {
+        Collider[] hits = Physics.OverlapBox(transform.localPosition, transform.localScale / 20f, Quaternion.identity, Physics.AllLayers, QueryTriggerInteraction.Collide);
+        foreach (Collider hitObject in hits)
+        {
+            Debug.LogWarning("Hit:  " + hitObject.gameObject.name);
+
+            if (hitObject.TryGetComponent<PowerUps>(out PowerUps powerUp))
+            {
+                powerUp.gameObject.SetActive(false);
+                Debug.LogWarning("Disabled: " + powerUp.gameObject.name);
+            }
         }
     }
 }

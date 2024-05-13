@@ -50,6 +50,8 @@ MonoBehaviour:
   colorMat: {fileID: 2100000, guid: 297a817c5fcfc4645b6572f40ce4ad33, type: 2}
   emissionIntensity: 4
   meshRenderer: {fileID: 1600760435665729360}
+  colliderForPlayer: {fileID: 5591838206462706097}
+  colliderForPowerUps: {fileID: 0}
   colors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}

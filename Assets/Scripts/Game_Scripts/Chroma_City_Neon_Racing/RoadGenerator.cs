@@ -184,12 +184,26 @@ public class RoadGenerator : MonoBehaviour
         Vector3 newPos = new Vector3(splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).x, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).y, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).z + extensionDistance);
         splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
 
+        AddPoint(splineComputerRoad);
+        newPos = new Vector3(splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 2).x + extensionDistance, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 2).y, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 2).z);
+        splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
+
         CreateBuildingsSpline();
         CreatePowerUpsSpline();
         StartCoroutine(RemoveExcessRoutine(splineComputerBuildings));
         StartCoroutine(RemoveExcessRoutine(splineComputerPowerUps));
         Invoke(nameof(RemoveObjectsAfter), 1f);
         // Invoke(nameof(MarkObjectsStatic), 2f);
+    }
+
+    private void AddPoint(SplineComputer splineComputer)
+    {
+        SplinePoint[] orgPoints = splineComputer.GetPoints();
+        SplinePoint[] tempPoints = null;
+        tempPoints = new SplinePoint[orgPoints.Length + 1];
+        System.Array.Copy(orgPoints, 0, tempPoints, 0, orgPoints.Length);
+        tempPoints[^1] = new SplinePoint(splineComputer.GetPointPosition(splineComputer.pointCount - 3));
+        splineComputer.SetPoints(tempPoints);
     }
 
     private void RemoveObjectsAfter()

@@ -47,7 +47,8 @@ public class LevelManager : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        levelId++;
+        LoadLevel(false);
     }
 
     public void LoadLevel(bool isNextLevel)
@@ -109,6 +110,7 @@ public class LevelManager : MonoBehaviour
 
     void DeleteScene()
     {
+        CancelInvoke();
         isLevelTimerOn = false;
         player.Reset();
         roadGenerator.Reset();
@@ -145,9 +147,11 @@ public class LevelManager : MonoBehaviour
         switch (GameStateManager.GetGameState())
         {
             case GameState.Idle:
+                uiManager.SetButtonsState(false);
                 break;
 
             case GameState.Racing:
+                uiManager.SetButtonsState(true);
                 isLevelTimerOn = true;
                 player.SetTargetSpeed(minSpeed);
                 break;

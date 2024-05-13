@@ -23,6 +23,11 @@ public class UIManager : MonoBehaviour
     private Sequence animSeq;
     private Tween move, scale, rotation, fade;
 
+    [Header("DEBUG Button Variables")]
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button previousButton;
+    [SerializeField] private Button restartButton;
+
     void Start()
     {
         GameEvents.instance.timePickedUp += OnTimePickedUp;
@@ -53,6 +58,15 @@ public class UIManager : MonoBehaviour
         pointAmountText.text = "PointAmount: " + pointAmount;
         playerTargetSpeed.text = "PlayerSpeed: " + playerSpeed.ToString("F2");
     }
+
+    public void SetButtonsState(bool state)
+    {
+        nextButton.interactable = state;
+        previousButton.interactable = state;
+        restartButton.interactable = state;
+    }
+
+    #region Power Up Animations
 
     public void OnTimePickedUp()
     {
@@ -135,4 +149,6 @@ public class UIManager : MonoBehaviour
         animSeq.Join(fade);
         animSeq.OnComplete(() => ResetImage(shieldImage));
     }
+
+    #endregion
 }

@@ -198,6 +198,8 @@ public class Player : MonoBehaviour
 
     public void Reset()
     {
+        currentLane = Lane.Middle;
+        SwitchLaneSequence();
         splineFollower.followSpeed = 0;
         splineFollower.SetPercent(0);
     }

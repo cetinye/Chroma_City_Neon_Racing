@@ -208,18 +208,21 @@ public class Player : MonoBehaviour
     {
         if (GameStateManager.GetGameState() != GameState.Racing) return;
 
-        AudioManager.instance.PlayOneShot(SoundType.LaneChange);
-
         //lane conversion
         if (currentLane == Lane.Left)
         {
             if (isRightPressed)
+            {
                 currentLane = Lane.Middle;
+                AudioManager.instance.PlayOneShot(SoundType.LaneChange);
+            }
             else
                 return;
         }
         else if (currentLane == Lane.Middle)
         {
+            AudioManager.instance.PlayOneShot(SoundType.LaneChange);
+
             if (isRightPressed)
                 currentLane = Lane.Right;
             else
@@ -230,7 +233,10 @@ public class Player : MonoBehaviour
             if (isRightPressed)
                 return;
             else
+            {
                 currentLane = Lane.Middle;
+                AudioManager.instance.PlayOneShot(SoundType.LaneChange);
+            }
         }
 
         //rotation conversion

@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image timeImage;
     [SerializeField] private Image speedImage;
     [SerializeField] private Image shieldImage;
-    [SerializeField] private RectTransform timerRect;
+    [SerializeField] private RectTransform timeTargetRect;
     [SerializeField] private RectTransform speedTargetRect;
     [SerializeField] private float timeToMove;
     [SerializeField] private Vector3 scaleTo;
@@ -37,13 +37,28 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button previousButton;
     [SerializeField] private Button restartButton;
 
+    void Update()
+    {
+        Debug.LogWarning("timeTargetRect.rect.position: " + timeTargetRect.rect.position);
+        Debug.LogWarning("timeTargetRect.position: " + timeTargetRect.position);
+        Debug.LogWarning("timeTargetRect.localPosition: " + timeTargetRect.localPosition);
+
+        Debug.LogWarning("==========================================================================================================");
+
+        Debug.LogWarning("timeImage.rectTransform.rect.position: " + timeImage.rectTransform.rect.position);
+        Debug.LogWarning("timeImage.rectTransform.position: " + timeImage.rectTransform.position);
+        Debug.LogWarning("timeImage.rectTransform.localPosition: " + timeImage.rectTransform.localPosition);
+
+        Debug.LogWarning("==========================================================================================================");
+    }
+
     void Start()
     {
         GameEvents.instance.timePickedUp += OnTimePickedUp;
         GameEvents.instance.speedPickedUp += OnSpeedPickedUp;
         GameEvents.instance.shieldPickedUp += OnShieldPickedUp;
 
-        defaultTimeImagePos = timeImage.rectTransform.localPosition;
+        defaultTimeImagePos = timeImage.rectTransform.position;
         defaultSpeedImagePos = speedImage.rectTransform.localPosition;
         defaultShieldImagePos = shieldImage.rectTransform.localPosition;
     }
@@ -154,7 +169,7 @@ public class UIManager : MonoBehaviour
         speedImage.enabled = false;
         shieldImage.enabled = false;
 
-        timeImage.rectTransform.localPosition = defaultTimeImagePos;
+        timeImage.rectTransform.position = defaultTimeImagePos;
         speedImage.rectTransform.localPosition = defaultSpeedImagePos;
         shieldImage.rectTransform.localPosition = defaultShieldImagePos;
 
@@ -168,7 +183,7 @@ public class UIManager : MonoBehaviour
     {
         animSeq = DOTween.Sequence();
 
-        move = timeImage.rectTransform.DOLocalMove(timerRect.localPosition, timeToMove).SetEase(Ease.OutQuad);
+        move = timeImage.rectTransform.DOMove(timeTargetRect.position, timeToMove).SetEase(Ease.OutQuad);
         scale = timeImage.rectTransform.DOScale(scaleTo, timeToMove / 2f).SetEase(Ease.OutQuad).SetLoops(2, LoopType.Yoyo);
 
         animSeq.Append(move);

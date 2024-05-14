@@ -12,7 +12,7 @@ public class Checkpoint : MonoBehaviour
     void Awake()
     {
         colorMat = meshRenderer.materials[1];
-        //Invoke(nameof(DisablePowerUps), 3f);
+        Invoke(nameof(DisablePowerUps), 2f);
     }
 
     public void SetRandomColor()

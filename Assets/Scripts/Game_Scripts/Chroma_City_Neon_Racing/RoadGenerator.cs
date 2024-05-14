@@ -180,8 +180,12 @@ public class RoadGenerator : MonoBehaviour
 
     private void ExtendRoad()
     {
-        float extensionDistance = -20f;
+        float extensionDistance = -5f;
         Vector3 newPos = new Vector3(splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).x, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).y, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 1).z + extensionDistance);
+        splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
+
+        AddPoint(splineComputerRoad);
+        newPos = new Vector3(splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 2).x, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 2).y, splineComputerRoad.GetPointPosition(splineComputerRoad.pointCount - 2).z + extensionDistance);
         splineComputerRoad.SetPointPosition(splineComputerRoad.pointCount - 1, newPos);
 
         AddPoint(splineComputerRoad);
@@ -236,7 +240,7 @@ public class RoadGenerator : MonoBehaviour
 
     public Vector3 GetRandomPointPos()
     {
-        return splineComputerRoad.GetPointPosition(Random.Range(2, splineComputerRoad.pointCount));
+        return splineComputerRoad.GetPointPosition(Random.Range(2, splineComputerRoad.pointCount - 2));
     }
 
     public void MarkObjectsStatic()

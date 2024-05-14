@@ -113,6 +113,7 @@ public class LevelManager : MonoBehaviour
         CancelInvoke();
         isLevelTimerOn = false;
         player.Reset();
+        mainCamera.Reset();
         roadGenerator.Reset();
         Destroy(finish.gameObject);
         Destroy(trafficLight.gameObject);

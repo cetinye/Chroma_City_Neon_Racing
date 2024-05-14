@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -5,11 +7,15 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("TMP_Text")]
     [SerializeField] private TMP_Text levelTimerText;
     [SerializeField] private TMP_Text gameStateText;
     [SerializeField] private TMP_Text levelIdText;
     [SerializeField] private TMP_Text pointAmountText;
     [SerializeField] private TMP_Text playerTargetSpeed;
+
+    [Header("TMP_Text")]
+    [SerializeField] private List<Image> speedFills = new List<Image>();
 
     [Header("Image Animation Variables")]
     [SerializeField] private Image timeImage;
@@ -67,6 +73,36 @@ public class UIManager : MonoBehaviour
         nextButton.interactable = state;
         previousButton.interactable = state;
         restartButton.interactable = state;
+    }
+
+    public void UpdateSpeedMeter(float playerSpeed)
+    {
+        int amountToShow = Mathf.CeilToInt((playerSpeed * speedFills.Count) / 6f);
+
+        StartCoroutine(SpeedMeterRoutine(amountToShow));
+    }
+
+    IEnumerator SpeedMeterRoutine(int amountToShow)
+    {
+        Tween fadeTween = null;
+
+        for (int i = 0; i < speedFills.Count; i++)
+        {
+            if (i < amountToShow)
+            {
+                fadeTween = speedFills[i].DOFade(1f, 0.005f);
+                yield return fadeTween.WaitForCompletion();
+            }
+        }
+
+        for (int i = speedFills.Count - 1; i >= 0; i--)
+        {
+            if (i > amountToShow)
+            {
+                fadeTween = speedFills[i].DOFade(0f, 0.005f);
+                yield return fadeTween.WaitForCompletion();
+            }
+        }
     }
 
     public void FlashRed()

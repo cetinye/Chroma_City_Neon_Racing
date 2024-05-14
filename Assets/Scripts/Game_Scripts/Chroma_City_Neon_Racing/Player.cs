@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Dreamteck.Splines;
 using Chroma_City_Neon_Racing;
-using System;
 
 public class Player : MonoBehaviour
 {

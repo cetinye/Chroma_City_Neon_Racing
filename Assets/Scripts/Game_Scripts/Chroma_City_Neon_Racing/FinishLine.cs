@@ -12,7 +12,7 @@ public class FinishLine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Player>(out Player player))
+        if (other.TryGetComponent<Player>(out Player player) && GameStateManager.GetGameState() == GameState.Racing)
         {
             AudioManager.instance.PlayOneShot(SoundType.Finish);
             GameStateManager.SetGameState(GameState.Success);

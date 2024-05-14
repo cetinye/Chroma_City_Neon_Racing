@@ -91,7 +91,7 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         LevelTimer();
-
+        uiManager.UpdateSpeedMeter(player.GetFollowSpeed());
         uiManager.UpdateDebugTexts(GameStateManager.GetGameState().ToString(), levelId, roadGenerator.pointAmount, player.GetFollowSpeed());
     }
 

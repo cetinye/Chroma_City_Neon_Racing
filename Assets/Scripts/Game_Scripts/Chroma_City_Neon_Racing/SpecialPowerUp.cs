@@ -18,7 +18,7 @@ public class SpecialPowerUp : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Player>(out Player player))
+        if (other.TryGetComponent<Player>(out Player player) && GameStateManager.GetGameState() == GameState.Racing)
         {
             this.player = player;
             switch (type)

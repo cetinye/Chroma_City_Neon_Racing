@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
     private Sequence animSeq;
     private Tween move, scale, rotation, fade;
 
+    [Header("Flash Variables")]
+    [SerializeField] private float flashInterval = 0.5f;
+
     [Header("DEBUG Button Variables")]
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
@@ -64,6 +67,19 @@ public class UIManager : MonoBehaviour
         nextButton.interactable = state;
         previousButton.interactable = state;
         restartButton.interactable = state;
+    }
+
+    public void FlashRed()
+    {
+        Sequence redFlash = DOTween.Sequence();
+
+        redFlash.Append(levelTimerText.DOColor(Color.red, flashInterval))
+                .SetEase(Ease.Linear)
+                .Append(levelTimerText.DOColor(Color.white, flashInterval))
+                .SetEase(Ease.Linear)
+                .SetLoops(6);
+
+        redFlash.Play();
     }
 
     #region Power Up Animations

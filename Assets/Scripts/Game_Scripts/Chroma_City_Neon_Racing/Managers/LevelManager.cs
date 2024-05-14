@@ -45,6 +45,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private SpecialPowerUp speedPowerUpPref;
     [SerializeField] private SpecialPowerUp timePowerUpPref;
 
+    [Header("Flash Interval")]
+    [SerializeField] private bool isFlashable = true;
+
+
     public void Restart()
     {
         levelId++;
@@ -140,6 +144,13 @@ public class LevelManager : MonoBehaviour
             levelTimer = 0;
             uiManager.UpdateTimer(levelTimer);
             GameStateManager.SetGameState(GameState.Failed);
+        }
+
+        if (levelTimer <= 5.2f && isFlashable)
+        {
+            isFlashable = false;
+            // GameManager.instance.PlayFx("Countdown", 0.7f, 1f);
+            uiManager.FlashRed();
         }
     }
 

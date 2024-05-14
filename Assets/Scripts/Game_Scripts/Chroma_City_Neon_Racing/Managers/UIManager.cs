@@ -37,21 +37,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button previousButton;
     [SerializeField] private Button restartButton;
 
-    void Update()
-    {
-        Debug.LogWarning("timeTargetRect.rect.position: " + timeTargetRect.rect.position);
-        Debug.LogWarning("timeTargetRect.position: " + timeTargetRect.position);
-        Debug.LogWarning("timeTargetRect.localPosition: " + timeTargetRect.localPosition);
-
-        Debug.LogWarning("==========================================================================================================");
-
-        Debug.LogWarning("timeImage.rectTransform.rect.position: " + timeImage.rectTransform.rect.position);
-        Debug.LogWarning("timeImage.rectTransform.position: " + timeImage.rectTransform.position);
-        Debug.LogWarning("timeImage.rectTransform.localPosition: " + timeImage.rectTransform.localPosition);
-
-        Debug.LogWarning("==========================================================================================================");
-    }
-
     void Start()
     {
         GameEvents.instance.timePickedUp += OnTimePickedUp;

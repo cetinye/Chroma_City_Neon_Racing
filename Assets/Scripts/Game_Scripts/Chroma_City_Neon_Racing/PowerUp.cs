@@ -14,6 +14,7 @@ public class PowerUp : MonoBehaviour
         if (isCollideable && GameStateManager.GetGameState() == GameState.Racing && other.TryGetComponent<Player>(out Player player))
         {
             Debug.LogWarning("Player PickedUp PowerUp");
+            powerUps.Deactivate();
 
             if (powerUpMat.color == player.GetColor() || player.GetColor() == Color.white)
             {
@@ -35,7 +36,6 @@ public class PowerUp : MonoBehaviour
             }
 
             meshRenderer.enabled = false;
-            powerUps.Deactivate();
         }
     }
 

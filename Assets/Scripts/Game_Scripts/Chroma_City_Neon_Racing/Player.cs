@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float shakeStrength;
     [SerializeField] private int shakeVibrato;
     private Tween shakeTween;
+    private float tempSpeed;
 
     [Header("Lane Switch Variables")]
     [SerializeField] private Transform modelTransform;
@@ -78,6 +79,12 @@ public class Player : MonoBehaviour
         }
         else
         {
+            StopCoroutine(SlowDownRoutine());
+            shakeTween?.Kill(true);
+            laneSwitchSeq?.Kill(true);
+            move?.Kill(true);
+            rotate?.Kill(true);
+            modelTransform.DOLocalRotate(Vector3.zero, 0f);
             StartCoroutine(SlowDownRoutine());
         }
 
@@ -259,7 +266,7 @@ public class Player : MonoBehaviour
         move = transform.DOLocalMoveX(GetLanePosition(), laneSwitchTime);
         rotate = modelTransform.DOLocalRotate(rotationAmount, rotationTime).OnComplete(() =>
         {
-            rotate = modelTransform.DOLocalRotate(Vector3.zero, rotationTime);
+            modelTransform.DOLocalRotate(Vector3.zero, rotationTime);
         });
 
         laneSwitchSeq.Append(move);
@@ -283,17 +290,15 @@ public class Player : MonoBehaviour
 
     IEnumerator SlowDownRoutine()
     {
-        shakeTween?.Kill(true);
-        laneSwitchSeq?.Kill(true);
-        move?.Kill(true);
-        rotate?.Kill(true);
-
-        float tempSpeed = targetSpeed;
+        tempSpeed = targetSpeed;
         targetSpeed = 0f;
-        shakeTween = modelTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato);
+        shakeTween = modelTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato).OnComplete(() =>
+        {
+            targetSpeed = tempSpeed + speedPenatlyAmount;
+            targetSpeed = Mathf.Max(targetSpeed, minSpeed);
+        });
+
         yield return new WaitForSeconds(0.33f);
-        targetSpeed = tempSpeed + speedPenatlyAmount;
-        targetSpeed = Mathf.Max(targetSpeed, minSpeed);
     }
 }
 

@@ -287,6 +287,17 @@ public class LevelManager : MonoBehaviour
             }
         }
 
+        Invoke(nameof(DisableOverlappingPowerups), 2.5f);
+    }
+
+    private void DisableOverlappingPowerups()
+    {
+        PowerUps[] childList = roadGenerator.splineComputerPowerUps.transform.GetComponentsInChildren<PowerUps>(false);
+
+        for (int i = 0; i < childList.Length; i++)
+        {
+            childList[i].DisableOverlaps();
+        }
     }
 
     private Vector3 GetRandomPointPos()
@@ -300,7 +311,7 @@ public class LevelManager : MonoBehaviour
 
         usedPositions.Add(pos);
 
-        pos = new Vector3(pos.x + 0.02f, 0.102f, pos.z);
+        pos = new Vector3(pos.x + 0.02f, 0.102f, pos.z + UnityEngine.Random.Range(0.2f, 0.55f));
         return pos;
     }
 

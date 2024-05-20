@@ -41,4 +41,19 @@ public class PowerUps : MonoBehaviour
             powerUp.Reset();
         }
     }
+
+    public void DisableOverlaps()
+    {
+        Collider[] hits = Physics.OverlapBox(transform.localPosition, transform.localScale / 1.3f, Quaternion.identity, Physics.AllLayers, QueryTriggerInteraction.Collide);
+        foreach (Collider hitObject in hits)
+        {
+            // Debug.LogWarning("Hit:  " + hitObject.gameObject.name);
+
+            if (hitObject.TryGetComponent<SpecialPowerUp>(out SpecialPowerUp specialPowerUp))
+            {
+                specialPowerUp.gameObject.SetActive(false);
+                // Debug.LogWarning("Disabled: " + specialPowerUp.gameObject.name);
+            }
+        }
+    }
 }

@@ -28,6 +28,7 @@ public class RoadGenerator : MonoBehaviour
 
     public void SpawnLevel()
     {
+        SetComputerStates(true);
         SpawnPoints(pointAmount);
         pointAmountToRandomize = Mathf.CeilToInt(pointAmount / 2);
         RandomizePointsOnX(minX, maxX, pointAmountToRandomize);
@@ -35,6 +36,7 @@ public class RoadGenerator : MonoBehaviour
         CreateCheckpointsSpline();
         CreatePowerUpsSpline();
         Invoke(nameof(RemoveExcessObjects), 1f);
+        Invoke(nameof(DisableComputers), 3f);
     }
 
     public void Reset()
@@ -243,14 +245,17 @@ public class RoadGenerator : MonoBehaviour
         return splineComputerRoad.GetPointPosition(Random.Range(2, splineComputerRoad.pointCount - 2));
     }
 
-    public void MarkObjectsStatic()
+    public void SetComputerStates(bool state)
     {
-        Debug.LogWarning("Marking objects static");
-        StaticBatchingUtility.Combine(splineComputerRoad.gameObject);
-        StaticBatchingUtility.Combine(splineComputerBuildings.gameObject);
-        StaticBatchingUtility.Combine(splineComputerCheckpoints.gameObject);
-        StaticBatchingUtility.Combine(splineComputerPowerUps.gameObject);
-        StaticBatchingUtility.Combine(streetLights);
+        splineComputerRoad.enabled = state;
+        splineComputerBuildings.enabled = state;
+        splineComputerCheckpoints.enabled = state;
+        splineComputerPowerUps.enabled = state;
+    }
+
+    public void DisableComputers()
+    {
+        SetComputerStates(false);
     }
 
     IEnumerator RemoveExcessRoutine(SplineComputer splineComputer)

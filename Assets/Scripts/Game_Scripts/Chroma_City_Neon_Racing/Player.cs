@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private float speedChangeAmount;
     private float speedPenatlyAmount;
     private bool isShieldActive;
+    private bool isSpeedPowerupActive;
 
     [Header("Player Shake Variables")]
     [SerializeField] private float shakeDuration;
@@ -128,6 +129,16 @@ public class Player : MonoBehaviour
         {
             shieldMaterial.DOFade(0f, 1f).SetEase(Ease.InOutSine).OnComplete(() => shield.SetActive(false));
         }
+    }
+
+    public bool IsSpeedPowerupActive()
+    {
+        return isSpeedPowerupActive;
+    }
+
+    public void SetSpeedPowerupActiveState(bool val)
+    {
+        isSpeedPowerupActive = val;
     }
 
     public void FlashShield()

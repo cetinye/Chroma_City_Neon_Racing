@@ -21,6 +21,13 @@ public class SpecialPowerUp : MonoBehaviour
         if (other.TryGetComponent<Player>(out Player player) && GameStateManager.GetGameState() == GameState.Racing)
         {
             this.player = player;
+
+            // if picked up speed while already speeding, skip
+            if (type == PowerUpType.Speed && player.IsSpeedPowerupActive())
+            {
+                return;
+            }
+
             switch (type)
             {
                 case PowerUpType.Shield:
@@ -31,6 +38,7 @@ public class SpecialPowerUp : MonoBehaviour
                     Invoke(nameof(Disable), durationOfPowerups);
                     break;
                 case PowerUpType.Speed:
+                    player.SetSpeedPowerupActiveState(true);
                     player.SetTargetSpeed(player.GetTargetSpeed() + addSpeedAmount);
                     GameEvents.instance.SpeedPickedUp();
                     Invoke(nameof(Disable), durationOfPowerups);
@@ -57,6 +65,7 @@ public class SpecialPowerUp : MonoBehaviour
                 break;
             case PowerUpType.Speed:
                 player.SetTargetSpeed(player.GetTargetSpeed() - addSpeedAmount);
+                player.SetSpeedPowerupActiveState(false);
                 break;
             case PowerUpType.Time:
                 break;

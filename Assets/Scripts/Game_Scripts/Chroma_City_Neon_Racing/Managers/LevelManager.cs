@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Chroma_City_Neon_Racing;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {

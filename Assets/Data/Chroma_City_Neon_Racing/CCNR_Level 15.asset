@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: CCNR_Level 15
   m_EditorClassIdentifier: 
   levelId: 15
-  minSpeedRange: 3.8
-  maxSpeedRange: 4.8
+  minSpeedRange: 6.68
+  maxSpeedRange: 13.37
   ballSpeedChangeAmount: 0.1
-  speedPenatlyAmount: -0.3
-  pathLength: 36
+  speedPenatlyAmount: 50
+  pathLength: 39
   shieldPowerup: 1
   speedPowerup: 1
   timePowerup: 1
   durationOfPowerups: 5
-  timeLimit: 120
-  maxScore: 710
+  timeLimit: 90
+  maxScore: 1984

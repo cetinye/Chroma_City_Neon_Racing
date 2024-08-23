@@ -208,6 +208,27 @@ public class LevelManager : MonoBehaviour
         levelTimer = timeLimit;
     }
 
+    public int CalculateScore()
+    {
+        int score = 0;
+        score = Mathf.CeilToInt((roadGenerator.passedPointCount * 20) + (player.CorrectPowerUpsPickedUp * 50) + (levelTimer * 3) - ((levelSO.pathLength - roadGenerator.passedPointCount) * 10 + (player.WrongPowerUpsPickedUp * 25)));
+        score = Mathf.Clamp(score, 0, maxScore);
+
+        float convertToWitminaScore = ((float)score / maxScore) * 1000f;
+        int witminaScore = Mathf.Clamp(Mathf.CeilToInt(convertToWitminaScore), 0, 1000);
+
+        Debug.LogWarning("passedPointCount: " + roadGenerator.passedPointCount);
+        Debug.LogWarning("remainingPointCount: " + (levelSO.pathLength - roadGenerator.passedPointCount));
+        Debug.LogWarning("timeLeft: " + levelTimer);
+        Debug.LogWarning("CorrectPowerUpsPickedUp: " + player.CorrectPowerUpsPickedUp);
+        Debug.LogWarning("WrongPowerUpsPickedUp: " + player.WrongPowerUpsPickedUp);
+        Debug.LogWarning("Score: " + score);
+        Debug.LogWarning("convertToWitminaScore: " + convertToWitminaScore);
+        Debug.LogWarning("witminaScore: " + witminaScore);
+
+        return score;
+    }
+
     #region Input Controls
 
     public void RightPressed()

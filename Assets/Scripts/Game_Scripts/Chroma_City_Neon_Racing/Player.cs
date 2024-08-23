@@ -21,6 +21,10 @@ public class Player : MonoBehaviour
     private float speedPenatlyAmount;
     private bool isShieldActive;
     private bool isSpeedPowerupActive;
+    private int correctPowerupsPickedUp;
+    private int wrongPowerupsPickedUp;
+    public int CorrectPowerUpsPickedUp => correctPowerupsPickedUp;
+    public int WrongPowerUpsPickedUp => wrongPowerupsPickedUp;
 
     [Header("Player Shake Variables")]
     [SerializeField] private float shakeDuration;
@@ -77,6 +81,7 @@ public class Player : MonoBehaviour
         {
             targetSpeed += speedChangeAmount;
             targetSpeed = Mathf.Min(targetSpeed, maxSpeed);
+            correctPowerupsPickedUp++;
         }
         else
         {
@@ -87,6 +92,7 @@ public class Player : MonoBehaviour
             rotate?.Kill(true);
             modelTransform.DOLocalRotate(Vector3.zero, 0f);
             StartCoroutine(SlowDownRoutine());
+            wrongPowerupsPickedUp++;
         }
 
         ChangeMotorSound();
@@ -305,7 +311,7 @@ public class Player : MonoBehaviour
         targetSpeed = 0f;
         shakeTween = modelTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato).OnComplete(() =>
         {
-            targetSpeed = tempSpeed + speedPenatlyAmount;
+            targetSpeed = tempSpeed - (tempSpeed * speedPenatlyAmount / 100);
             targetSpeed = Mathf.Max(targetSpeed, minSpeed);
         });
 

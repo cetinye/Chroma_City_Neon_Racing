@@ -4,10 +4,10 @@ using System.IO;
 
 namespace Chroma_City_Neon_Racing
 {
-    public class CSVtoSO
+    public class CSVtoSO_Chroma_City_Neon_Racing
     {
         //Check .csv path
-        private static string CSVPath = "/Editor/LevelCSV.csv";
+        private static string CSVPath = "/Editor/LevelCSV_Chroma_City_Neon_Racing.csv";
 
         [MenuItem("Tools/CSV_to_SO/Chroma_City_Neon_Racing/Generate")]
         public static void GenerateSO()
@@ -29,15 +29,15 @@ namespace Chroma_City_Neon_Racing
                 level.levelId = int.Parse(splitData[0]);
                 level.minSpeedRange = float.Parse(splitData[1]);
                 level.maxSpeedRange = float.Parse(splitData[2]);
-                level.ballSpeedChangeAmount = float.Parse(splitData[3]);
-                level.speedPenatlyAmount = float.Parse(splitData[4]);
-                level.pathLength = int.Parse(splitData[5]);
-                level.shieldPowerup = int.Parse(splitData[6]);
-                level.speedPowerup = int.Parse(splitData[7]);
-                level.timePowerup = int.Parse(splitData[8]);
-                level.durationOfPowerups = int.Parse(splitData[9]);
-                level.timeLimit = int.Parse(splitData[10]);
-                level.maxScore = int.Parse(splitData[11]);
+                level.ballSpeedChangeAmount = float.Parse(splitData[4]);
+                level.speedPenatlyAmount = float.Parse(splitData[5]);
+                level.pathLength = int.Parse(splitData[6]);
+                level.shieldPowerup = int.Parse(splitData[9]);
+                level.speedPowerup = int.Parse(splitData[10]);
+                level.timePowerup = int.Parse(splitData[11]);
+                level.durationOfPowerups = int.Parse(splitData[12]);
+                level.timeLimit = int.Parse(splitData[13]);
+                level.maxScore = int.Parse(splitData[14]);
 
                 AssetDatabase.CreateAsset(level, $"Assets/Data/Chroma_City_Neon_Racing/{"CCNR_Level " + startingNamingIndex}.asset");
                 startingNamingIndex++;

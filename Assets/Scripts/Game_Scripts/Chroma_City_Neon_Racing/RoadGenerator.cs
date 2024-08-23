@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RoadGenerator : MonoBehaviour
 {
@@ -25,6 +27,8 @@ public class RoadGenerator : MonoBehaviour
 
     [Header("Building Variables")]
     [SerializeField] private float buildingOffsetToRoad;
+
+    public int passedPointCount = 0;
 
     public void SpawnLevel()
     {
@@ -74,6 +78,23 @@ public class RoadGenerator : MonoBehaviour
         splineFollower.spline = splineComputerRoad;
     }
 
+    void AddTriggers()
+    {
+        for (int i = 0; i < splineComputerRoad.pointCount; i++)
+        {
+            double normalizedPosition = splineComputerRoad.GetPointPercent(i);
+            splineComputerRoad.AddTrigger(0, normalizedPosition, SplineTrigger.Type.Forward);
+            splineComputerRoad.triggerGroups[0].triggers[i].workOnce = true;
+            splineComputerRoad.triggerGroups[0].triggers[i].AddListener(OnTriggerCrossed);
+        }
+    }
+
+    public void OnTriggerCrossed()
+    {
+        passedPointCount++;
+        Debug.LogWarning("OnTriggerCrossed " + passedPointCount);
+    }
+
     void RandomizePointsOnX(float minX, float maxX, int pointAmountToRandomize)
     {
         SplinePoint[] points = new SplinePoint[splineComputerRoad.pointCount];
@@ -96,7 +117,7 @@ public class RoadGenerator : MonoBehaviour
 
         do
         {
-            index = Random.Range(2, points.Length - 2);
+            index = UnityEngine.Random.Range(2, points.Length - 2);
 
         } while (randomizedPoints.Contains(index));
 
@@ -152,6 +173,7 @@ public class RoadGenerator : MonoBehaviour
 
         levelManager.SpawnFinish();
         ExtendRoad();
+        AddTriggers();
         RemoveObjectsAfter();
     }
 
@@ -237,12 +259,12 @@ public class RoadGenerator : MonoBehaviour
 
     public void SetPathLength(int newPathLength)
     {
-        pointAmount = newPathLength;
+        pointAmount = newPathLength + 2;
     }
 
     public Vector3 GetRandomPointPos()
     {
-        return splineComputerRoad.GetPointPosition(Random.Range(2, splineComputerRoad.pointCount - 2));
+        return splineComputerRoad.GetPointPosition(UnityEngine.Random.Range(2, splineComputerRoad.pointCount - 2));
     }
 
     public void SetComputerStates(bool state)

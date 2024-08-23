@@ -50,8 +50,6 @@ MonoBehaviour:
   colorMat: {fileID: 2100000, guid: 297a817c5fcfc4645b6572f40ce4ad33, type: 2}
   emissionIntensity: 4
   meshRenderer: {fileID: 1600760435665729360}
-  colliderForPlayer: {fileID: 5591838206462706097}
-  colliderForPowerUps: {fileID: 0}
   colors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
@@ -63,7 +61,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952501780539070085}
-  m_Mesh: {fileID: -5928785198427282456, guid: a8b990e50c0988a45890e1b9fef06694, type: 3}
+  m_Mesh: {fileID: -5928785198427282456, guid: 06fc51e67f9f616478daa5643131387f, type: 3}
 --- !u!23 &1600760435665729360
 MeshRenderer:
   m_ObjectHideFlags: 0

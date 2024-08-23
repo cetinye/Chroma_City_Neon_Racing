@@ -69,7 +69,7 @@ public class LevelManager : MonoBehaviour
         }
 
         levelId = Mathf.Clamp(levelId, 0, levels.Count - 1);
-        PlayerPrefs.SetInt("CCNR_levelId", levelId);
+        // PlayerPrefs.SetInt("CCNR_levelId", levelId);
 
 
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -184,7 +184,7 @@ public class LevelManager : MonoBehaviour
 
     private void AssignLevelVariables()
     {
-        levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
+        // levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
         levelSO = levels[levelId];
 
         minSpeed = levelSO.minSpeedRange;

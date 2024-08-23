@@ -35,8 +35,8 @@ public class RoadGenerator : MonoBehaviour
         CreateBuildingsSpline();
         CreateCheckpointsSpline();
         CreatePowerUpsSpline();
-        // Invoke(nameof(RemoveExcessObjects), 1f);
-        // Invoke(nameof(DisableComputers), 3f);
+        Invoke(nameof(RemoveExcessObjects), 1f);
+        Invoke(nameof(DisableComputers), 3f);
     }
 
     public void Reset()
@@ -145,7 +145,7 @@ public class RoadGenerator : MonoBehaviour
 
     void RemoveExcessObjects()
     {
-        RemoveExcessObjectsInSpline(splineComputerRoad);
+        // RemoveExcessObjectsInSpline(splineComputerRoad);
         RemoveExcessObjectsInSpline(splineComputerBuildings);
         RemoveExcessObjectsInSpline(splineComputerPowerUps);
         RemoveExcessObjectsInSpline(splineComputerCheckpoints);

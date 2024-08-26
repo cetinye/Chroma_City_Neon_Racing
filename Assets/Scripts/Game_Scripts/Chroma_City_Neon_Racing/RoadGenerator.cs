@@ -32,6 +32,8 @@ public class RoadGenerator : MonoBehaviour
 
     public void SpawnLevel()
     {
+        passedPointCount = 0;
+
         SetComputerStates(true);
         SpawnPoints(pointAmount);
         pointAmountToRandomize = Mathf.CeilToInt(pointAmount / 2);
@@ -39,6 +41,7 @@ public class RoadGenerator : MonoBehaviour
         CreateBuildingsSpline();
         CreateCheckpointsSpline();
         CreatePowerUpsSpline();
+        levelManager.DisableCheckpointOverlaps();
         Invoke(nameof(RemoveExcessObjects), 1f);
         Invoke(nameof(DisableComputers), 3f);
     }

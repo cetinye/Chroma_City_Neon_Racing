@@ -50,8 +50,7 @@ public class LevelManager : MonoBehaviour
 
     public void Restart()
     {
-        levelId++;
-        LoadLevel(false);
+        LoadLevel(true);
     }
 
     public void LoadLevel(bool isNextLevel)
@@ -69,10 +68,10 @@ public class LevelManager : MonoBehaviour
         }
 
         levelId = Mathf.Clamp(levelId, 0, levels.Count - 1);
-        // PlayerPrefs.SetInt("CCNR_levelId", levelId);
+        PlayerPrefs.SetInt("CCNR_levelId", levelId);
 
 
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         DeleteScene();
         StartGame();
     }
@@ -113,7 +112,7 @@ public class LevelManager : MonoBehaviour
 
     void DeleteScene()
     {
-        CancelInvoke();
+        // CancelInvoke();
         isLevelTimerOn = false;
         player.Reset();
         mainCamera.Reset();
@@ -184,7 +183,7 @@ public class LevelManager : MonoBehaviour
 
     private void AssignLevelVariables()
     {
-        // levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
+        levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
         levelSO = levels[levelId];
 
         minSpeed = levelSO.minSpeedRange;
@@ -211,12 +210,18 @@ public class LevelManager : MonoBehaviour
     public int CalculateScore()
     {
         int score = 0;
-        score = Mathf.CeilToInt((roadGenerator.passedPointCount * 20) + (player.CorrectPowerUpsPickedUp * 50) + (levelTimer * 3) - ((levelSO.pathLength - roadGenerator.passedPointCount) * 10 + (player.WrongPowerUpsPickedUp * 25)));
+        score = Mathf.CeilToInt((roadGenerator.passedPointCount * 20) + (player.CorrectPowerUpsPickedUp * 50) + (levelTimer * 3) -
+                                    (Mathf.Max(levelSO.pathLength - roadGenerator.passedPointCount, 0) * 10 + (player.WrongPowerUpsPickedUp * 25)));
+
         score = Mathf.Clamp(score, 0, maxScore);
 
         float convertToWitminaScore = ((float)score / maxScore) * 1000f;
         int witminaScore = Mathf.Clamp(Mathf.CeilToInt(convertToWitminaScore), 0, 1000);
 
+        Debug.LogWarning("------------------------------------------");
+        Debug.LogWarning("------------------------------------------");
+        Debug.LogWarning("------------------------------------------");
+        Debug.LogWarning("------------------------------------------");
         Debug.LogWarning("passedPointCount: " + roadGenerator.passedPointCount);
         Debug.LogWarning("remainingPointCount: " + (levelSO.pathLength - roadGenerator.passedPointCount));
         Debug.LogWarning("timeLeft: " + levelTimer);
@@ -225,6 +230,16 @@ public class LevelManager : MonoBehaviour
         Debug.LogWarning("Score: " + score);
         Debug.LogWarning("convertToWitminaScore: " + convertToWitminaScore);
         Debug.LogWarning("witminaScore: " + witminaScore);
+        Debug.LogWarning("roadGenerator.passedPointCount * 20: " + roadGenerator.passedPointCount * 20);
+        Debug.LogWarning("player.CorrectPowerUpsPickedUp * 50: " + player.CorrectPowerUpsPickedUp * 50);
+        Debug.LogWarning("levelTimer * 3: " + levelTimer * 3);
+        Debug.LogWarning("------------------------------------------");
+        Debug.LogWarning("levelSO.pathLength - roadGenerator.passedPointCount: " + Mathf.Max(levelSO.pathLength - roadGenerator.passedPointCount, 0));
+        Debug.LogWarning("levelSO.pathLength - roadGenerator.passedPointCount * 10: " + Mathf.Max(levelSO.pathLength - roadGenerator.passedPointCount, 0) * 10);
+        Debug.LogWarning("player.WrongPowerUpsPickedUp * 25: " + player.WrongPowerUpsPickedUp * 25);
+        Debug.LogWarning("------------------------------------------");
+
+        uiManager.UpdateScoreTexts(witminaScore, score);
 
         return score;
     }
@@ -256,7 +271,23 @@ public class LevelManager : MonoBehaviour
 
         foreach (Checkpoint checkpoint in checkpoints)
         {
+            checkpoint.Initialize();
             checkpoint.SetRandomColor();
+        }
+    }
+
+    public void DisableCheckpointOverlaps()
+    {
+        List<Checkpoint> checkpoints = new List<Checkpoint>();
+
+        for (int i = 0; i < checkpointGenerator.transform.childCount; i++)
+        {
+            checkpoints.Add(checkpointGenerator.transform.GetChild(i).GetComponent<Checkpoint>());
+        }
+
+        foreach (Checkpoint checkpoint in checkpoints)
+        {
+            checkpoint.Initialize();
         }
     }
 

@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text levelIdText;
     [SerializeField] private TMP_Text pointAmountText;
     [SerializeField] private TMP_Text playerTargetSpeed;
+    [SerializeField] private TMP_Text gameScoreText;
+    [SerializeField] private TMP_Text witminaScoreText;
 
     [Header("TMP_Text")]
     [SerializeField] private List<Image> speedFills = new List<Image>();
@@ -66,6 +68,12 @@ public class UIManager : MonoBehaviour
         levelIdText.text = "LevelID: " + levelId;
         pointAmountText.text = "PointAmount: " + pointAmount;
         playerTargetSpeed.text = "PlayerSpeed: " + playerSpeed.ToString("F2");
+    }
+
+    public void UpdateScoreTexts(int wScore, int gScore)
+    {
+        gameScoreText.text = "Game Score: " + gScore.ToString("");
+        witminaScoreText.text = "Witmina Score: " + wScore.ToString("");
     }
 
     public void SetButtonsState(bool state)

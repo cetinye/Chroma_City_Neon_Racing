@@ -9,7 +9,7 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private List<Color> colors = new List<Color>();
 
-    void Awake()
+    public void Initialize()
     {
         colorMat = meshRenderer.materials[1];
         Invoke(nameof(DisablePowerUps), 2f);

@@ -27,7 +27,7 @@ public class NoInputWarning : MonoBehaviour
             if (timeSinceLastTouch >= timeToWaitForWarning && !warned)
             {
                 warned = true;
-                Debug.LogWarning("No touch detected for " + timeToWaitForWarning + " seconds!");
+                Debug.Log("No touch detected for " + timeToWaitForWarning + " seconds!");
                 textFade = TextFade(1f, 1f);
                 imageFade = ImageFade(1f, 1f);
             }

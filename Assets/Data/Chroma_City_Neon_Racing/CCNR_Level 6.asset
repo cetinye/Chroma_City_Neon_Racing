@@ -17,10 +17,10 @@ MonoBehaviour:
   maxSpeedRange: 6.15
   ballSpeedChangeAmount: 0.1
   speedPenatlyAmount: 50
-  pathLength: 21
+  pathLength: 19
   shieldPowerup: 1
   speedPowerup: 0
   timePowerup: 0
   durationOfPowerups: 5
   timeLimit: 90
-  maxScore: 1174
+  maxScore: 999.68

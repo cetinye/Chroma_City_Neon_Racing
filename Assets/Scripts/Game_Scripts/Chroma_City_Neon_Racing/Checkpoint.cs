@@ -27,7 +27,7 @@ public class Checkpoint : MonoBehaviour
         if (other.TryGetComponent<Player>(out Player player) && GameStateManager.GetGameState() == GameState.Racing)
         {
             AudioManager.instance.PlayOneShot(SoundType.Checkpoint);
-            Debug.LogWarning("Player Passed Checkpoint");
+            Debug.Log("Player Passed Checkpoint");
             player.SetColor(colorMat.color);
         }
     }

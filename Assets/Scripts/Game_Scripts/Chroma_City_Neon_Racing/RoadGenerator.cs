@@ -95,7 +95,7 @@ public class RoadGenerator : MonoBehaviour
     public void OnTriggerCrossed()
     {
         passedPointCount++;
-        Debug.LogWarning("OnTriggerCrossed " + passedPointCount);
+        Debug.Log("OnTriggerCrossed " + passedPointCount);
     }
 
     void RandomizePointsOnX(float minX, float maxX, int pointAmountToRandomize)

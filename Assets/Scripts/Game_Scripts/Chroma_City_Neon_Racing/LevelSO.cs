@@ -13,5 +13,5 @@ public class LevelSO : ScriptableObject
     public int timePowerup;
     public int durationOfPowerups;
     public int timeLimit;
-    public int maxScore;
+    public float maxScore;
 }

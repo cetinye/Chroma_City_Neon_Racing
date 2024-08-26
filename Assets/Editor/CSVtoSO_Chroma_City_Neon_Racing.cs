@@ -37,7 +37,7 @@ namespace Chroma_City_Neon_Racing
                 level.timePowerup = int.Parse(splitData[11]);
                 level.durationOfPowerups = int.Parse(splitData[12]);
                 level.timeLimit = int.Parse(splitData[13]);
-                level.maxScore = int.Parse(splitData[14]);
+                level.maxScore = float.Parse(splitData[14]);
 
                 AssetDatabase.CreateAsset(level, $"Assets/Data/Chroma_City_Neon_Racing/{"CCNR_Level " + startingNamingIndex}.asset");
                 startingNamingIndex++;

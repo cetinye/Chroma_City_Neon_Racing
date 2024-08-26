@@ -23,7 +23,7 @@ public class LevelManager : MonoBehaviour
     private int timePowerup;
     private int durationOfPowerups;
     private int timeLimit;
-    private int maxScore;
+    private float maxScore;
     private bool isLevelTimerOn = false;
     private float levelTimer;
     private List<Vector3> usedPositions = new List<Vector3>();
@@ -210,10 +210,10 @@ public class LevelManager : MonoBehaviour
     public int CalculateScore()
     {
         int score = 0;
-        score = Mathf.CeilToInt((roadGenerator.passedPointCount * 20) + (player.CorrectPowerUpsPickedUp * 50) + (levelTimer * 3) -
+        score = Mathf.CeilToInt((roadGenerator.passedPointCount * 20) + (player.CorrectPowerUpsPickedUp * 50) + (levelTimer * 2) -
                                     (Mathf.Max(levelSO.pathLength - roadGenerator.passedPointCount, 0) * 10 + (player.WrongPowerUpsPickedUp * 25)));
 
-        score = Mathf.Clamp(score, 0, maxScore);
+        score = Mathf.Clamp(score, 0, Mathf.CeilToInt(maxScore));
 
         float convertToWitminaScore = ((float)score / maxScore) * 1000f;
         int witminaScore = Mathf.Clamp(Mathf.CeilToInt(convertToWitminaScore), 0, 1000);
@@ -232,7 +232,7 @@ public class LevelManager : MonoBehaviour
         Debug.LogWarning("witminaScore: " + witminaScore);
         Debug.LogWarning("roadGenerator.passedPointCount * 20: " + roadGenerator.passedPointCount * 20);
         Debug.LogWarning("player.CorrectPowerUpsPickedUp * 50: " + player.CorrectPowerUpsPickedUp * 50);
-        Debug.LogWarning("levelTimer * 3: " + levelTimer * 3);
+        Debug.LogWarning("levelTimer * 3: " + levelTimer * 2);
         Debug.LogWarning("------------------------------------------");
         Debug.LogWarning("levelSO.pathLength - roadGenerator.passedPointCount: " + Mathf.Max(levelSO.pathLength - roadGenerator.passedPointCount, 0));
         Debug.LogWarning("levelSO.pathLength - roadGenerator.passedPointCount * 10: " + Mathf.Max(levelSO.pathLength - roadGenerator.passedPointCount, 0) * 10);

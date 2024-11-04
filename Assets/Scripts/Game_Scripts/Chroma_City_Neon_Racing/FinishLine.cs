@@ -16,7 +16,7 @@ public class FinishLine : MonoBehaviour
         {
             AudioManager.instance.PlayOneShot(SoundType.Finish);
             GameStateManager.SetGameState(GameState.Success);
-            LevelManager.instance.CalculateScore();
+            LevelManager.instance.LevelFinished();
         }
     }
 

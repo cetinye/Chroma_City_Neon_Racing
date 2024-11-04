@@ -50,28 +50,15 @@ public class LevelManager : MonoBehaviour
 
     public void Restart()
     {
-        LoadLevel(true);
+        levelId++;
+        LoadLevel();
     }
 
-    public void LoadLevel(bool isNextLevel)
+    public void LoadLevel()
     {
-        //TODO: Oyunda her seviyeyi çarpmadan sorunsuz bir şekilde tamamlamak bir üst seviyeye geçmemizi sağlayacaktır.
-        //TODO: Eğer bir bölümde çıkan enerj toplarından yanlış olanı alırsak, yani engele çarptığımız taktirde bölümü tekrar oynayacağız, 2 sefer daha aynı bölümü oynamamıza rağmen hala çarpma yaşıyorsak seviyemiz bir tane düşecektir.
-
-        if (isNextLevel)
-        {
-            levelId++;
-        }
-        else
-        {
-            levelId--;
-        }
-
         levelId = Mathf.Clamp(levelId, 0, levels.Count - 1);
         PlayerPrefs.SetInt("CCNR_levelId", levelId);
 
-
-        // UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         DeleteScene();
         StartGame();
     }
@@ -129,6 +116,27 @@ public class LevelManager : MonoBehaviour
         spawnedSpecialPowerUps.Clear();
     }
 
+    void DecideLevel()
+    {
+        if (player.WrongPowerUpsPickedUp >= 1)
+        {
+            int downCounter = PlayerPrefs.GetInt("CCNR_DownCounter", 0);
+            if (++downCounter >= 1)
+            {
+                downCounter = 0;
+                --levelId;
+            }
+            PlayerPrefs.SetInt("CCNR_DownCounter", downCounter);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("CCNR_DownCounter", 0);
+            ++levelId;
+        }
+
+        PlayerPrefs.SetInt("CCNR_levelId", levelId);
+    }
+
     void LevelTimer()
     {
         if (!isLevelTimerOn) return;
@@ -183,8 +191,8 @@ public class LevelManager : MonoBehaviour
 
     private void AssignLevelVariables()
     {
-        levelId = PlayerPrefs.GetInt("CCNR_levelId", 0);
-        levelSO = levels[levelId];
+        levelId = PlayerPrefs.GetInt("CCNR_levelId", 1);
+        levelSO = levels[levelId - 1];
 
         minSpeed = levelSO.minSpeedRange;
         maxSpeed = levelSO.maxSpeedRange;
@@ -207,7 +215,14 @@ public class LevelManager : MonoBehaviour
         levelTimer = timeLimit;
     }
 
-    public int CalculateScore()
+    public void LevelFinished()
+    {
+        DecideLevel();
+        CalculateScore();
+        Invoke(nameof(LoadLevel), 5f);
+    }
+
+    private int CalculateScore()
     {
         int score = 0;
         score = Mathf.CeilToInt((roadGenerator.passedPointCount * 20) + (player.CorrectPowerUpsPickedUp * 50) + (levelTimer * 2) -
